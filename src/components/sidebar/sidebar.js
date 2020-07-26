@@ -5,10 +5,10 @@ const SideBar = () => {
     return (
         <div className="side-bar">
             <nav className="side-bar__menu">
-                <MenuLink title="Cтатьи" />
-                <MenuLink title="Рубрики" />
-                <MenuLink title="Теги" />
-                <MenuLink title="Авторы" />
+                <MenuLink title="Cтатьи" path="posts" isActive />
+                <MenuLink title="Рубрики" path="categories" />
+                <MenuLink title="Теги" path="tags" />
+                <MenuLink title="Авторы" path="authors" />
             </nav>
         </div>
     );

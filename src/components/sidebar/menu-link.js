@@ -1,10 +1,11 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
 
-const MenuLink = ({ title, isActive }) => {
+const MenuLink = ({ title, path = '' }) => {
     return (
-        <div className="side-bar__link">
+        <NavLink to={'/' + path} className="side-bar__link" activeClassName="side-bar__link_active">
             <span className="side-bar__title">{title}</span>
-        </div>
+        </NavLink>
     );
 }
 
