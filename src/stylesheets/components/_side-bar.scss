@@ -1,0 +1,47 @@
+.side-bar {
+  background-color: $color-sidebar;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.side-bar__menu {
+  width: 100%;
+}
+
+.side-bar__link {
+  padding: 12px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.side-bar__title {
+  margin-left: 32px;
+  padding-left: 15px;
+  position: relative;
+  color: $color-link;
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 16px;
+  text-transform: capitalize;
+}
+
+.side-bar__title:before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 0;
+  left: -15px;
+  background-image: url('../../images/post.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}

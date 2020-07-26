@@ -1,17 +1,14 @@
 import React from 'react';
 
 import logo from './logo/home.png';
+import textLogo from './logo/text-logo.png';
 
 const Header = () => {
     return (
         <div className="header">
-            <div className="wrapper header__wrapper">
-                <div className="header__logo">
-                    <a href="#">
-                        <img src={logo} alt="the vyshka logo"/>
-                        <span className="logo__text">the vyshka</span>
-                    </a>
-                </div>
+            <div className="header__logo">
+                <img src={logo} alt="" rel="logo"/>
+                <img src={textLogo} alt="the vyshka" rel="logo"/>
             </div>
         </div>
     );

@@ -1,0 +1,10 @@
+.content {
+  box-sizing: border-box;
+  width: auto;
+  height: 100%;
+  margin-left: 20rem;
+  padding-top: 5rem;
+  background-color: $color-background;
+  display: flex;
+  flex-direction: column;
+}

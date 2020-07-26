@@ -1,3 +1,21 @@
 .header {
   background-color: $color-header;
+  height: 5rem;
+  padding: 0 15px;
+  position: fixed;
+  width: 100%;
+  //left: 0;
+  //right: 0;
+  top: 0;
+}
+
+.header__logo {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  img {
+    margin: 0 5px;
+  }
 }
