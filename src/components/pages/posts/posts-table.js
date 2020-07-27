@@ -2,7 +2,7 @@ import React from 'react';
 
 const PostsTable = () => {
     return (
-        <table className="content__table">
+        <table className="content__table posts_table">
             <thead>
             <tr>
                 <th>Заголовок</th>
