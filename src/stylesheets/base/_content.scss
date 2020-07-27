@@ -1,0 +1,47 @@
+.content {
+  box-sizing: border-box;
+  width: auto;
+  height: 100%;
+  margin-left: 20rem;
+  padding: 5rem 2rem 0;
+  background-color: $color-background;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: 1.7rem 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 35px;
+  }
+
+  &__btn {
+    border: none;
+    padding: 8px 8px 10px;
+    margin-left: 2rem;
+    color: $color-content-btn;
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 14px;
+    outline: none;
+    background: linear-gradient(221.77deg, #7D2995 15.92%, #2395BD 97.92%);
+    cursor: pointer;
+  }
+
+  &__row {
+    box-shadow: 0 0 4px rgba(0, 117, 180, 0.42);
+    border: 1px solid #CBD6DC;
+    background: #FAFDFF;
+  }
+
+  &__search {
+    padding: 8px 21px 7px 10px;
+    display: flex;
+    align-items: center;
+  }
+}

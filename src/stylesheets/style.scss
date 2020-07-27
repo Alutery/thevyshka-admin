@@ -1,7 +1,10 @@
 @import '~reset-css/sass/reset';
 
 @import 'abstracts/constants';
+@import 'abstracts/placeholders';
 
 @import 'base/base';
+@import 'base/content';
+@import 'base/table';
 
 @import 'components/all';

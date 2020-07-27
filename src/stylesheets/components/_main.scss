@@ -1,64 +1,25 @@
-.content {
-  box-sizing: border-box;
-  width: auto;
-  height: 100%;
-  margin-left: 20rem;
-  padding: 5rem 2rem 0;
-  background-color: $color-background;
-  display: flex;
-  flex-direction: column;
-}
+.search-form {
+  &__input {
+    width: 180px;
+    padding: 7px;
+    line-height: 14px;
+    font-size: 12px;
+    border: none;
+    outline: none;
+    @extend %input-box-background;
 
-.content__header {
-  padding: 1.7rem 0;
-  display: flex;
-  align-items: center;
-}
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+  }
 
-.content__title {
-  font-size: 3rem;
-  font-weight: bold;
-  line-height: 35px;
-}
-
-.content__btn {
-  border: none;
-  padding: 12px 13px 14px;
-  margin-left: 2rem;
-  color: $color-content-btn;
-  font-weight: bold;
-  font-size: 1.2rem;
-  line-height: 14px;
-  outline: none;
-  background: linear-gradient(221.77deg, #7D2995 15.92%, #2395BD 97.92%);
-  cursor: pointer;
-}
-
-.content__row {
-  box-shadow: 0 0 4px rgba(0, 117, 180, 0.42);
-  border: 1px solid #CBD6DC;
-  background: #FAFDFF;
-}
-
-.content__search {
-  padding: 8px 21px 7px 10px;
-  display: flex;
-  align-items: center;
-}
-
-.search-form__input {
-  width: 180px;
-  padding: 7px;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.25);
-  background: #FFFFFF;
-  line-height: 14px;
-  font-size: 12px;
-  border: none;
-  outline: none;
-}
-
-.search-form__input::placeholder {
-  color: $color-text-secondary;
+  &__select {
+    margin-left: 2rem;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 16px;
+    outline: none;
+  }
 }
 
 .search-btn {
@@ -71,26 +32,18 @@
   outline: none;
   position: relative;
   cursor: pointer;
-}
 
-.search-btn:after {
-  content: '';
-  background-image: url('../../images/search.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 15px;
-  height: 15px;
-  margin: 5px;
-  position: absolute;
-  display: block;
-  top: 0;
-  left: 0;
-}
-
-.search-form__select {
-  margin-left: 2rem;
-  border: none;
-  font-size: 1.4rem;
-  line-height: 16px;
-  outline: none;
+  &::after {
+    content: '';
+    background-image: url('../../images/search.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+  }
 }

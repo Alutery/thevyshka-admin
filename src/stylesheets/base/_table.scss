@@ -3,13 +3,15 @@
   border-collapse: collapse;
 
   thead {
-    color: #808080;
+    display: block;
+    color: $color-text-thead;
     font-size: 1.3rem;
     line-height: 15px;
 
     tr {
       box-sizing: border-box;
-      padding: 10px 26px;
+      height: 40px;
+      align-items: center;
     }
   }
 
@@ -19,27 +21,18 @@
 
     tr {
       box-sizing: border-box;
-      padding: 8px 26px;
-      min-height: 74px;
     }
   }
 
   tr {
-    display: inline-grid;
+    display: grid;
     width: 100%;
-    grid-template-columns: 2.2fr 1.6fr 1fr 1fr 1.2fr 1fr;
-    background: #FAFDFF;
+    background: $color-box-background;
     margin-bottom: 5px;
-    box-shadow: 0 0 4px rgba(0, 117, 180, 0.42);
-
-    border: 1px solid #CBD6DC;
+    @extend %content-box-border;
   }
 
   th {
-    box-sizing: border-box;
-    color: #636363;
-    position: sticky;
-    top: 0;
     text-align: left;
   }
 

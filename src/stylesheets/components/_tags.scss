@@ -1,0 +1,98 @@
+.tags {
+  &__columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  &__left-column {
+    max-width: 600px;
+    flex-grow: 1;
+  }
+
+  &__table-row {
+    margin-top: 7px;
+    padding: 7px 18px;
+    max-height: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4rem;
+  }
+
+  &__table-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 1.1rem;
+    color: $color-link;
+    outline: none;
+    cursor: pointer;
+
+    &:first-child::after {
+      content: '|';
+      margin: 0 0.8rem;
+    }
+  }
+}
+
+.tags__add-form {
+  width: 250px;
+  margin-left: 13px;
+  background-color: $color-box-background;
+  padding: 8px 13px 12px;
+  min-height: 84px;
+  box-sizing: border-box;
+  @extend %content-box-border;
+}
+
+.add-form {
+  &__form {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 2.2rem;
+    line-height: 26px;
+  }
+
+  &__input {
+    padding: 6px;
+    outline: none;
+    border: none;
+    font-size: 1.2rem;
+    line-height: 14px;
+    @extend %input-box-background;
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+  }
+
+  &__submit {
+    width: 25px;
+    height: 25px;
+    margin-left: 8px;
+    border: none;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    @extend %form-mini-button-background;
+
+    &::after {
+      content: '';
+      background-image: url('../../images/submit.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 15px;
+      height: 15px;
+      margin: 5px;
+      position: absolute;
+      display: block;
+      top: 2px;
+      left: 0;
+    }
+  }
+}
