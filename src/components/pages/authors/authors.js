@@ -1,20 +1,48 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
 
-import ContentHeader from '../../content-base/content-header';
+import ContentHeader from '../../base/content-header';
 import FilterBar from '../../filter-bar/filter-bar';
 import AuthorsTable from './authors-table';
-import ContentHeaderButton from '../../content-base/content-header-button';
+import ContentButton from '../../base/content-button';
 
-const Authors = () => {
+import {withDataService} from '../../hoc';
+import {fetchCollaborators} from '../../../actions';
+
+const Authors = ({fetchCollaborators, collaborators, loading, error}) => {
+    useEffect(() => {
+        fetchCollaborators();
+    }, [fetchCollaborators]);
+
+    if (error) {
+        return <div>Error</div>;
+    }
+
     return (
         <>
             <ContentHeader title="Редакция">
-                <ContentHeaderButton text="Добавить нового"/>
+                <ContentButton text="Добавить нового"/>
             </ContentHeader>
             <FilterBar placeholder="Поиск по имени"/>
-            <AuthorsTable/>
+            {
+                loading ? <AuthorsTable loading={loading}/> : <AuthorsTable collaborators={collaborators.collaborators}/>
+            }
         </>
     );
 };
 
-export default Authors;
+const mapStateToProps = ({collaboratorsList: {collaborators, loading, error}}) => {
+    return {collaborators, loading, error};
+};
+
+const mapDispatchToProps = (dispatch, {dataService}) => {
+    return {
+        fetchCollaborators: fetchCollaborators(dataService, dispatch)
+    }
+};
+
+export default compose(
+    withDataService(),
+    connect(mapStateToProps, mapDispatchToProps),
+)(Authors);

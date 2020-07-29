@@ -3,8 +3,8 @@ import {FETCH_TAGS_REQUEST, FETCH_TAGS_SUCCESS, FETCH_TAGS_ERROR} from '../const
 const tagsList = (state, action) => {
     if (state === undefined) {
         return {
-            loading: true,
             tags: [],
+            loading: true,
             error: null,
         };
     }
