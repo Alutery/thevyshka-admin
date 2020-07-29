@@ -10,8 +10,8 @@ const TagsTable = ({loading, tags}) => {
             {
                 tags.map(tag => (
                     <div className="content__row tags__table-row" key={tag.id}>
-                        <span>{tag.name}</span>
-                        <span>
+                        <span className="tags__tag">{tag.name}</span>
+                        <span className="tags__table-btns">
                             <button className="tags__table-btn" type="button">Изменить</button>
                             <button className="tags__table-btn" type="button">Удалить</button>
                         </span>

@@ -1,8 +1,19 @@
-import {FETCH_TAGS_REQUEST, FETCH_TAGS_SUCCESS, FETCH_TAGS_ERROR} from '../constants/tags-types';
+import {
+    FETCH_TAGS_REQUEST,
+    FETCH_TAGS_SUCCESS,
+    FETCH_TAGS_ERROR,
+    FETCH_TAGS_REQUEST_BY_PAGE,
+} from '../constants/tags-types';
 
 const tagsRequested = () => {
     return {
         type: FETCH_TAGS_REQUEST,
+    };
+};
+
+const tagsRequestedByPage = () => {
+    return {
+        type: FETCH_TAGS_REQUEST_BY_PAGE,
     };
 };
 
@@ -27,6 +38,14 @@ const fetchTags = (dataService, dispatch) => () => {
         .catch(error => dispatch(tagsError(error)));
 };
 
+const fetchTagsByPage = (page, dataService, dispatch) => {
+    dispatch(tagsRequestedByPage(page));
+    dataService.getTags(page * 15)
+        .then(data => dispatch(tagsLoaded(data)))
+        .catch(error => dispatch(tagsError(error)));
+};
+
 export {
     fetchTags,
+    fetchTagsByPage,
 };

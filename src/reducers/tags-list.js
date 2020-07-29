@@ -1,9 +1,17 @@
-import {FETCH_TAGS_REQUEST, FETCH_TAGS_SUCCESS, FETCH_TAGS_ERROR} from '../constants/tags-types';
+import {
+    FETCH_TAGS_REQUEST,
+    FETCH_TAGS_SUCCESS,
+    FETCH_TAGS_ERROR,
+    FETCH_TAGS_REQUEST_BY_PAGE
+} from '../constants/tags-types';
 
 const tagsList = (state, action) => {
     if (state === undefined) {
         return {
             tags: [],
+            totalTagsCount: 0,
+            pageSize: 15,
+            currentPage: 1,
             loading: true,
             error: null,
         };
@@ -12,19 +20,27 @@ const tagsList = (state, action) => {
     switch (action.type) {
         case FETCH_TAGS_REQUEST:
             return {
-                tags: [],
+                ...state.tagsList,
+                loading: true,
+                error: null,
+            };
+        case FETCH_TAGS_REQUEST_BY_PAGE:
+            return {
+                ...state.tagsList,
+                currentPage: action.payload,
                 loading: true,
                 error: null,
             };
         case FETCH_TAGS_SUCCESS:
             return {
-                tags: action.payload,
+                ...state.tagsList,
+                tags: action.payload.tags,
+                totalTagsCount: action.payload.count,
                 loading: false,
-                error: null,
             };
         case FETCH_TAGS_ERROR:
             return {
-                tags: [],
+                ...state.tagsList,
                 loading: false,
                 error: action.payload,
             };

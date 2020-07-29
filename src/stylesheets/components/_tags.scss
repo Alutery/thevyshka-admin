@@ -19,6 +19,17 @@
     font-size: 1.4rem;
   }
 
+  &__tag {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__table-btns {
+    min-width: 116px;
+    margin-left: 15px;
+  }
+
   &__table-btn {
     border: none;
     background: none;
