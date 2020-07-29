@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ContentHeaderButton = ({ text }) => {
+const ContentButton = ({ text }) => {
     return (
         <button className="content__btn">{text}</button>
     );
 };
 
-export default ContentHeaderButton;
+export default ContentButton;

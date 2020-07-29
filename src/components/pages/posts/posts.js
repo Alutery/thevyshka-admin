@@ -1,21 +1,39 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
 
-import ContentHeader from '../../content-base/content-header';
+import ContentHeader from '../../base/content-header';
 import FilterBar from '../../filter-bar/filter-bar';
 import PostsTable from './posts-table';
-import ContentHeaderButton from '../../content-base/content-header-button';
+import ContentButton from '../../base/content-button';
 
-const Posts = () => {
+import {fetchPosts} from '../../../actions';
+import {withDataService} from '../../hoc';
+
+const Posts = ({fetchPosts, posts, loading, error}) => {
     const selectOptions = [
         {value: 'all', name: 'Все'},
         {value: 'draft', name: 'Черновик'},
         {value: 'published', name: 'Опубликована'},
     ];
 
+    useEffect(() => {
+        console.log(posts, loading, error);
+        fetchPosts();
+    }, []);
+
+    useEffect(() => {
+        console.log(posts, loading)
+    }, [posts, loading])
+
+    if (error) {
+        return <div>Error</div>;
+    }
+
     return (
         <>
             <ContentHeader title="Статьи">
-                <ContentHeaderButton text="Добавить новую"/>
+                <ContentButton text="Добавить новую"/>
             </ContentHeader>
             <FilterBar placeholder="Поиск по заголовку">
                 <select name="filter" className="search-form__select" defaultValue="">
@@ -25,9 +43,24 @@ const Posts = () => {
                     }
                 </select>
             </FilterBar>
-            <PostsTable/>
+            {
+                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts && posts.posts}/>
+            }
         </>
     );
 };
 
-export default Posts;
+const mapStateToProps = ({postsList: {posts, loading, error}}) => {
+    return {posts, loading, error};
+};
+
+const mapDispatchToProps = (dispatch, {dataService}) => {
+    return {
+        fetchPosts: fetchPosts(dataService, dispatch),
+    };
+};
+
+export default compose(
+    withDataService(),
+    connect(mapStateToProps, mapDispatchToProps)
+)(Posts);

@@ -1,6 +1,12 @@
 import React from 'react';
 
-const PostsTable = () => {
+const PostsTable = ({posts}) => {
+    if(!posts) {
+        return <div>loading</div>
+    }
+
+    console.log(posts)
+
     return (
         <table className="content__table posts_table">
             <thead>
@@ -13,23 +19,21 @@ const PostsTable = () => {
                 <th>Дата</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>Прайс-листы и конверты: как устроена коррупция в российских вузах</td>
-                <td>Текст: Имя Фамилия<br/>Иллюстрации: Имя Фамилия</td>
-                <td>Люди, Мнения</td>
-                <td>Коррупция, экзамен</td>
-                <td>/corrupt-universities/</td>
-                <td>21.07.2020</td>
-            </tr>
-            <tr>
-                <td>Прайс-листы и конверты: как устроена коррупция в российских вузах</td>
-                <td>Текст: Имя Фамилия<br/>Иллюстрации: Имя Фамилия</td>
-                <td>Люди, Мнения</td>
-                <td>Коррупция, экзамен</td>
-                <td>/corrupt-universities/</td>
-                <td>21.07.2020</td>
-            </tr>
+            <tbody style={{whiteSpace: 'pre-wrap'}}>
+            {
+                posts.map(post => {
+                    return (
+                        <tr key={post.id}>
+                            <td>{post.title}</td>
+                            <td>{post.collaborators.map(collaborator => `${collaborator.role}: ${collaborator.name}`).join('\n')}</td>
+                            <td>{post.categories.map(category => category.name).join(', ')}</td>
+                            <td>{post.tags.map(tag => tag.name).join(', ')}</td>
+                            <td>/{post.linkName}/</td>
+                            <td>{post.modifiedDate}</td>
+                        </tr>
+                    );
+                })
+            }
             </tbody>
         </table>
     );
