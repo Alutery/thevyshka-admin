@@ -18,13 +18,8 @@ const Posts = ({fetchPosts, posts, loading, error}) => {
     ];
 
     useEffect(() => {
-        console.log(posts, loading, error);
         fetchPosts();
-    }, []);
-
-    useEffect(() => {
-        console.log(posts, loading)
-    }, [posts, loading])
+    }, [fetchPosts]);
 
     if (error) {
         return <div>Error</div>;
@@ -44,7 +39,7 @@ const Posts = ({fetchPosts, posts, loading, error}) => {
                 </select>
             </FilterBar>
             {
-                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts && posts.posts}/>
+                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts.posts}/>
             }
         </>
     );

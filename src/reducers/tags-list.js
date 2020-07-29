@@ -1,36 +1,36 @@
-import {FETCH_POSTS_ERROR, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS} from '../constants/posts-types';
+import {FETCH_TAGS_REQUEST, FETCH_TAGS_SUCCESS, FETCH_TAGS_ERROR} from '../constants/tags-types';
 
-const postsList = (state, action) => {
+const tagsList = (state, action) => {
     if (state === undefined) {
         return {
             loading: true,
-            posts: [],
+            tags: [],
             error: null,
         };
     }
 
     switch (action.type) {
-        case FETCH_POSTS_REQUEST:
+        case FETCH_TAGS_REQUEST:
             return {
-                posts: [],
+                tags: [],
                 loading: true,
                 error: null,
             };
-        case FETCH_POSTS_SUCCESS:
+        case FETCH_TAGS_SUCCESS:
             return {
-                posts: action.payload,
+                tags: action.payload,
                 loading: false,
                 error: null,
             };
-        case FETCH_POSTS_ERROR:
+        case FETCH_TAGS_ERROR:
             return {
-                posts: [],
+                tags: [],
                 loading: false,
                 error: action.payload,
             };
         default:
-            return state.postsList;
+            return state.tagsList;
     }
 };
 
-export default postsList;
+export default tagsList;

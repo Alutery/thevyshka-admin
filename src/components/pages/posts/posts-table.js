@@ -1,11 +1,9 @@
 import React from 'react';
 
-const PostsTable = ({posts}) => {
-    if(!posts) {
-        return <div>loading</div>
+const PostsTable = ({loading, posts}) => {
+    if(loading) {
+        return <div>Loading...</div>
     }
-
-    console.log(posts)
 
     return (
         <table className="content__table posts_table">
