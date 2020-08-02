@@ -43,5 +43,9 @@
     padding: 8px 21px 7px 10px;
     display: flex;
     align-items: center;
+
+    &>form {
+      display: inline-flex;
+    }
   }
 }

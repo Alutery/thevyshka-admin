@@ -5,7 +5,7 @@ import Pagination from 'react-paginating';
 const ContentPagination = ({total, pageSize, currentPage, onCurrentPageChange}) => {
 
     const handlePageChange = (page) => {
-        onCurrentPageChange(page);
+        onCurrentPageChange(page - 1);
     };
 
     return (
@@ -14,7 +14,7 @@ const ContentPagination = ({total, pageSize, currentPage, onCurrentPageChange}) 
             total={total}
             limit={pageSize}
             pageCount={3}
-            currentPage={currentPage}
+            currentPage={currentPage + 1}
         >
             {({
                   pages,

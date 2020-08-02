@@ -9,9 +9,9 @@ import TagsTable from './tags-table';
 import PaginationTagsContainer from './pagination-tags-container';
 
 import {withDataService} from '../../hoc';
-import {fetchTags} from '../../../actions';
+import {fetchTags, searchTags} from '../../../actions';
 
-const Tags = ({fetchTags, tags, loading, error}) => {
+const Tags = ({fetchTags, searchTags, tags, loading, error}) => {
     useEffect(() => {
         fetchTags();
     }, [fetchTags]);
@@ -20,12 +20,19 @@ const Tags = ({fetchTags, tags, loading, error}) => {
         return <div>Error</div>;
     }
 
+    const handleSubmitSearch = (event) => {
+        event.preventDefault();
+
+        const query = new FormData(event.target).get('query');
+        // searchTags(query);
+    };
+
     return (
         <>
             <ContentHeader title="Теги"/>
             <div className="tags__columns">
                 <div className="tags__left-column">
-                    <FilterBar placeholder="Поиск по тегу">
+                    <FilterBar placeholder="Поиск по тегу" handleSubmitSearch={handleSubmitSearch}>
                         <PaginationTagsContainer />
                     </FilterBar>
                     {
@@ -47,6 +54,7 @@ const mapStateToProps = ({tagsList: {tags, loading, error}}) => {
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
         fetchTags: fetchTags(dataService, dispatch),
+        searchTags: (query) => searchTags(dataService, dispatch),
     };
 };
 

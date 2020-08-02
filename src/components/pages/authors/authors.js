@@ -6,6 +6,7 @@ import ContentHeader from '../../base/content-header';
 import FilterBar from '../../filter-bar/filter-bar';
 import AuthorsTable from './authors-table';
 import ContentButton from '../../base/content-button';
+import PaginationAuthorsContainer from './pagination-authors-container';
 
 import {withDataService} from '../../hoc';
 import {fetchCollaborators} from '../../../actions';
@@ -24,9 +25,13 @@ const Authors = ({fetchCollaborators, collaborators, loading, error}) => {
             <ContentHeader title="Редакция">
                 <ContentButton text="Добавить нового"/>
             </ContentHeader>
-            <FilterBar placeholder="Поиск по имени"/>
+            <FilterBar placeholder="Поиск по имени">
+                <PaginationAuthorsContainer/>
+            </FilterBar>
             {
-                loading ? <AuthorsTable loading={loading}/> : <AuthorsTable collaborators={collaborators.collaborators}/>
+                loading ?
+                    <AuthorsTable loading={loading}/>
+                    : <AuthorsTable collaborators={collaborators.collaborators}/>
             }
         </>
     );

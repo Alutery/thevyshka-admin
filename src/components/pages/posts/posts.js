@@ -6,11 +6,12 @@ import ContentHeader from '../../base/content-header';
 import FilterBar from '../../filter-bar/filter-bar';
 import PostsTable from './posts-table';
 import ContentButton from '../../base/content-button';
+import PaginationPostsContainer from './pagination-posts-container';
 
-import {fetchPosts} from '../../../actions';
+import {fetchPosts, fetchPostsByQuery} from '../../../actions';
 import {withDataService} from '../../hoc';
 
-const Posts = ({fetchPosts, posts, loading, error}) => {
+const Posts = ({fetchPosts, fetchPostsByQuery, posts, loading, error}) => {
     const selectOptions = [
         {value: 'all', name: 'Все'},
         {value: 'draft', name: 'Черновик'},
@@ -30,16 +31,17 @@ const Posts = ({fetchPosts, posts, loading, error}) => {
             <ContentHeader title="Статьи">
                 <ContentButton text="Добавить новую"/>
             </ContentHeader>
-            <FilterBar placeholder="Поиск по заголовку">
+            <FilterBar placeholder="Поиск по заголовку" onSearch={fetchPostsByQuery}>
                 <select name="filter" className="search-form__select" defaultValue="">
                     <option value="" disabled hidden>Статус</option>
                     {
                         selectOptions.map(({value, name}) => <option value={value} key={value}>{name}</option>)
                     }
                 </select>
+                <PaginationPostsContainer/>
             </FilterBar>
             {
-                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts.posts}/>
+                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts}/>
             }
         </>
     );
@@ -52,6 +54,7 @@ const mapStateToProps = ({postsList: {posts, loading, error}}) => {
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
         fetchPosts: fetchPosts(dataService, dispatch),
+        fetchPostsByQuery: (query) => fetchPostsByQuery(query, dataService, dispatch),
     };
 };
 

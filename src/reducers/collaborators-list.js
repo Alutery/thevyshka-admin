@@ -1,9 +1,17 @@
-import {FETCH_COLLABORATORS_REQUEST, FETCH_COLLABORATORS_SUCCESS, FETCH_COLLABORATORS_ERROR} from '../constants/collaborators-types';
+import {
+    FETCH_COLLABORATORS_REQUEST,
+    FETCH_COLLABORATORS_REQUEST_BY_PAGE,
+    FETCH_COLLABORATORS_SUCCESS,
+    FETCH_COLLABORATORS_ERROR
+} from '../constants/collaborators-types';
 
 const collaboratorsList = (state, action) => {
     if (state === undefined) {
         return {
             collaborators: [],
+            totalCount: 0,
+            pageSize: 15,
+            currentPage: 1,
             loading: true,
             error: null,
         };
@@ -12,19 +20,27 @@ const collaboratorsList = (state, action) => {
     switch (action.type) {
         case FETCH_COLLABORATORS_REQUEST:
             return {
-                collaborators: [],
+                ...state.collaboratorsList,
+                loading: true,
+                error: null,
+            };
+        case FETCH_COLLABORATORS_REQUEST_BY_PAGE:
+            return {
+                ...state.collaboratorsList,
+                currentPage: action.payload,
                 loading: true,
                 error: null,
             };
         case FETCH_COLLABORATORS_SUCCESS:
             return {
+                ...state.collaboratorsList,
                 collaborators: action.payload,
+                totalCount: action.payload.count,
                 loading: false,
-                error: null,
             };
         case FETCH_COLLABORATORS_ERROR:
             return {
-                collaborators: [],
+                ...state.collaboratorsList,
                 loading: false,
                 error: action.payload,
             };

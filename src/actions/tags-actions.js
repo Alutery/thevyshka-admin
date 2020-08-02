@@ -45,7 +45,15 @@ const fetchTagsByPage = (page, dataService, dispatch) => {
         .catch(error => dispatch(tagsError(error)));
 };
 
+const searchTags = (query, dataService, dispatch) => {
+    dispatch(tagsRequested());
+    dataService.getTags()
+        .then(data => dispatch(tagsLoaded(data)))
+        .catch(error => dispatch(tagsError(error)));
+}
+
 export {
     fetchTags,
     fetchTagsByPage,
+    searchTags,
 };

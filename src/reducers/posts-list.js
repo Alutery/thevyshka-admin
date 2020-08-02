@@ -1,9 +1,17 @@
-import {FETCH_POSTS_ERROR, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS} from '../constants/posts-types';
+import {
+    FETCH_POSTS_REQUEST,
+    FETCH_POSTS_REQUEST_BY_PAGE,
+    FETCH_POSTS_SUCCESS,
+    FETCH_POSTS_ERROR
+} from '../constants/posts-types';
 
 const postsList = (state, action) => {
     if (state === undefined) {
         return {
             loading: true,
+            totalCount: 0,
+            pageSize: 15,
+            currentPage: 0,
             posts: [],
             error: null,
         };
@@ -12,19 +20,27 @@ const postsList = (state, action) => {
     switch (action.type) {
         case FETCH_POSTS_REQUEST:
             return {
-                posts: [],
+                ...state.postsList,
+                loading: true,
+                error: null,
+            };
+        case FETCH_POSTS_REQUEST_BY_PAGE:
+            return {
+                ...state.postsList,
+                currentPage: action.payload,
                 loading: true,
                 error: null,
             };
         case FETCH_POSTS_SUCCESS:
             return {
-                posts: action.payload,
+                ...state.postsList,
+                posts: action.payload.posts,
+                totalCount: action.payload.count,
                 loading: false,
-                error: null,
             };
         case FETCH_POSTS_ERROR:
             return {
-                posts: [],
+                ...state.postsList,
                 loading: false,
                 error: action.payload,
             };
