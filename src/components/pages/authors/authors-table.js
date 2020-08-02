@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 const AuthorsTable = ({loading, collaborators}) => {
     if (loading) {
@@ -24,7 +23,7 @@ const AuthorsTable = ({loading, collaborators}) => {
                         <td>{collaborator.name}</td>
                         <td>{collaborator.description}</td>
                         <td>{collaborator.posts.length}</td>
-                        <td><a href={collaborator.links} target="_blank">
+                        <td><a href={collaborator.links}>
                             {collaborator.links}
                         </a></td>
                         <td>{collaborator.date}</td>

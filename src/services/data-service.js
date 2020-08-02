@@ -9,7 +9,7 @@ export default class DataService {
 
     _formatDate(dateString) {
         const date = new Date(dateString);
-        const [{ value: month },,{ value: day },,{ value: year }] = this.dateTimeFormat .formatToParts(date);
+        const [{ value: month },,{ value: day },,{ value: year }] = this.dateTimeFormat.formatToParts(date);
 
         return `${day}.${month}.${year}`;
     }
