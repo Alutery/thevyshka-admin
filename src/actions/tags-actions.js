@@ -11,9 +11,10 @@ const tagsRequested = () => {
     };
 };
 
-const tagsRequestedByPage = () => {
+const tagsRequestedByPage = (page) => {
     return {
         type: FETCH_TAGS_REQUEST_BY_PAGE,
+        payload: page,
     };
 };
 

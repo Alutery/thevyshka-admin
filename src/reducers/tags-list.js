@@ -11,7 +11,7 @@ const tagsList = (state, action) => {
             tags: [],
             totalTagsCount: 0,
             pageSize: 15,
-            currentPage: 1,
+            currentPage: 0,
             loading: true,
             error: null,
         };

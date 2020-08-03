@@ -1,8 +1,9 @@
 import React from 'react';
+import Spinner from '../../base/spinner';
 
 const TagsTable = ({loading, tags}) => {
     if (loading) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     return (

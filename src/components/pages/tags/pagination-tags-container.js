@@ -19,7 +19,7 @@ const mapStateToProps = ({tagsList: {totalTagsCount, pageSize, currentPage}}) =>
 
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
-        onCurrentPageChange: (page) => {
+        onCurrentPageChange: ({page}) => {
             fetchTagsByPage(page, dataService, dispatch);
         },
     };

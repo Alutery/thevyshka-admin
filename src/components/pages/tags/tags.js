@@ -20,10 +20,8 @@ const Tags = ({fetchTags, searchTags, tags, loading, error}) => {
         return <div>Error</div>;
     }
 
-    const handleSubmitSearch = (event) => {
-        event.preventDefault();
-
-        const query = new FormData(event.target).get('query');
+    const handleSubmitSearch = (query) => {
+        console.log(query)
         // searchTags(query);
     };
 
@@ -32,7 +30,7 @@ const Tags = ({fetchTags, searchTags, tags, loading, error}) => {
             <ContentHeader title="Теги"/>
             <div className="tags__columns">
                 <div className="tags__left-column">
-                    <FilterBar placeholder="Поиск по тегу" handleSubmitSearch={handleSubmitSearch}>
+                    <FilterBar placeholder="Поиск по тегу" onSearch={handleSubmitSearch}>
                         <PaginationTagsContainer />
                     </FilterBar>
                     {
