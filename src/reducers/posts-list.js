@@ -2,7 +2,10 @@ import {
     FETCH_POSTS_REQUEST,
     FETCH_POSTS_REQUEST_BY_PAGE,
     FETCH_POSTS_SUCCESS,
-    FETCH_POSTS_ERROR
+    FETCH_POSTS_ERROR,
+    POST_STATUS_ALL,
+    FETCH_POSTS_REQUEST_BY_QUERY,
+    FETCH_POSTS_REQUEST_BY_STATUS
 } from '../constants/posts-types';
 
 const postsList = (state, action) => {
@@ -14,6 +17,8 @@ const postsList = (state, action) => {
             currentPage: 0,
             posts: [],
             error: null,
+            status: POST_STATUS_ALL,
+            query: '',
         };
     }
 
@@ -21,8 +26,11 @@ const postsList = (state, action) => {
         case FETCH_POSTS_REQUEST:
             return {
                 ...state.postsList,
+                currentPage: 0,
                 loading: true,
                 error: null,
+                status: POST_STATUS_ALL,
+                query: '',
             };
         case FETCH_POSTS_REQUEST_BY_PAGE:
             return {
@@ -30,6 +38,18 @@ const postsList = (state, action) => {
                 currentPage: action.payload,
                 loading: true,
                 error: null,
+            };
+        case FETCH_POSTS_REQUEST_BY_QUERY:
+            return {
+                ...state.postsList,
+                status: POST_STATUS_ALL,
+                query: action.payload,
+            };
+        case FETCH_POSTS_REQUEST_BY_STATUS:
+            return {
+                ...state.postsList,
+                status: action.payload,
+                query: '',
             };
         case FETCH_POSTS_SUCCESS:
             return {

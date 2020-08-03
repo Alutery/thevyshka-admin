@@ -3,7 +3,14 @@ import {
     FETCH_POSTS_REQUEST_BY_PAGE,
     FETCH_POSTS_SUCCESS,
     FETCH_POSTS_ERROR,
+    POST_STATUS_ALL,
+    POST_STATUS_PUBLISHED,
+    POST_STATUS_DRAFT,
+    FETCH_POSTS_REQUEST_BY_STATUS,
+    FETCH_POSTS_REQUEST_BY_QUERY,
 } from '../constants/posts-types';
+
+import {PAGE_SIZE} from '../constants/common';
 
 const postsRequested = () => {
     return {
@@ -15,6 +22,20 @@ const postsRequestedByPage = (page) => {
     return {
         type: FETCH_POSTS_REQUEST_BY_PAGE,
         payload: page,
+    }
+};
+
+const postsRequestedByStatus = (page) => {
+    return {
+        type: FETCH_POSTS_REQUEST_BY_STATUS,
+        payload: page,
+    }
+};
+
+const postsRequestedByQuery = (query) => {
+    return {
+        type: FETCH_POSTS_REQUEST_BY_QUERY,
+        payload: query,
     }
 };
 
@@ -32,41 +53,52 @@ const postsError = (error) => {
     };
 };
 
-const fetchPosts = (dataService, dispatch) => () => {
-    dispatch(postsRequested());
-
-    dataService.getAllPosts()
-        .then(data => dispatch(postsLoaded(data)))
-        .catch(error => dispatch(postsError(error)));
-};
-
-const fetchPostsByPage = (page, dataService, dispatch) => {
+const fetchPosts = ({page = 0, query, status} = {}, dataService, dispatch) => {
     dispatch(postsRequestedByPage(page));
 
-    dataService.getAllPosts(page * 15)
-        .then(data => dispatch(postsLoaded(data)))
-        .catch(error => dispatch(postsError(error)));
-};
+    if (query) {
+        dispatch(postsRequestedByQuery(query));
+        return _fetchPostsByQuery({page, query}, dataService, dispatch);
+    }
 
-const fetchPostsByQuery = (query, dataService, dispatch) => {
+    if (status) {
+        dispatch(postsRequestedByStatus(status));
+        return _fetchPostsByStatus({page, status}, dataService, dispatch);
+    }
+
     dispatch(postsRequested());
-
-    dataService.gatAllPostsByQuery(query)
+    return dataService.getAllPosts(page * PAGE_SIZE)
         .then(data => dispatch(postsLoaded(data)))
         .catch(error => dispatch(postsError(error)));
 };
 
-const fetchPostsByQueryAndPage = ({query, page}, dataService, dispatch) => {
-    dispatch(postsRequestedByPage(page));
-
-    dataService.gatAllPostsByQuery(query, page * 15)
+const _fetchPostsByQuery = ({query, page = 0}, dataService, dispatch) => {
+    dataService.gatAllPostsByQuery(query, page * PAGE_SIZE)
         .then(data => dispatch(postsLoaded(data)))
+        .catch(error => dispatch(postsError(error)));
+};
+
+const _fetchPostsByStatus = ({status, page = 0}, dataService, dispatch) => {
+    let result;
+
+    switch (status) {
+        case POST_STATUS_ALL:
+            result = dataService.getAllPosts(page * PAGE_SIZE);
+            break;
+        case POST_STATUS_PUBLISHED:
+            result = dataService.getPublishedPosts(page * PAGE_SIZE);
+            break;
+        case POST_STATUS_DRAFT:
+            result = dataService.getDraftPosts(page * PAGE_SIZE);
+            break;
+        default:
+            throw new Error(`Post type "${status}" not exists`);
+    }
+
+    return result.then(data => dispatch(postsLoaded(data)))
         .catch(error => dispatch(postsError(error)));
 };
 
 export {
     fetchPosts,
-    fetchPostsByPage,
-    fetchPostsByQuery,
-    fetchPostsByQueryAndPage,
 };

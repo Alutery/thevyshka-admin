@@ -3,7 +3,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 
 import {withDataService} from '../../hoc';
-import {fetchPostsByPage} from '../../../actions';
+import {fetchPosts} from '../../../actions';
 
 import ContentPagination from '../../base/content-pagination';
 
@@ -13,14 +13,14 @@ const PaginationPostsContainer = (props) => {
     );
 };
 
-const mapStateToProps = ({postsList: {totalCount, pageSize, currentPage}}) => {
-    return {total: totalCount, pageSize, currentPage};
+const mapStateToProps = ({postsList: {totalCount, pageSize, currentPage, status, query}}) => {
+    return {total: totalCount, pageSize, currentPage, status, query};
 };
 
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
-        onCurrentPageChange: (page) => {
-            fetchPostsByPage(page, dataService, dispatch);
+        onCurrentPageChange: (filter) => {
+            fetchPosts(filter, dataService, dispatch);
         },
     };
 };

@@ -2,10 +2,10 @@ import React from 'react';
 
 import Pagination from 'react-paginating';
 
-const ContentPagination = ({total, pageSize, currentPage, onCurrentPageChange}) => {
+const ContentPagination = ({total, pageSize, currentPage, onCurrentPageChange, status, query}) => {
 
     const handlePageChange = (page) => {
-        onCurrentPageChange(page - 1);
+        onCurrentPageChange({'page': page - 1, status, query});
     };
 
     return (
