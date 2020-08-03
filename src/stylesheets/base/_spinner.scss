@@ -1,0 +1,22 @@
+.spinner-wrapper {
+  margin-top: 20px;
+  text-align: center;
+  height: 100%;
+}
+
+.spinner {
+  display: inline-block;
+  pointer-events: none;
+  width: 2rem;
+  height: 2rem;
+  border: 0.4em solid $color-box-background;
+  border-top-color: rgb(162, 192, 222);
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+  100% {
+    transform: rotate(360deg);
+  }
+}
