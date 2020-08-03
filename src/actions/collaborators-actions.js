@@ -3,7 +3,6 @@ import {
     FETCH_COLLABORATORS_REQUEST_BY_PAGE,
     FETCH_COLLABORATORS_SUCCESS,
     FETCH_COLLABORATORS_ERROR,
-    FETCH_COLLABORATORS_REQUEST_BY_QUERY,
 } from '../constants/collaborators-types';
 
 const collaboratorsRequested = () => {
@@ -16,13 +15,6 @@ const collaboratorsRequestedByPage = (page) => {
     return {
         type: FETCH_COLLABORATORS_REQUEST_BY_PAGE,
         payload: page,
-    };
-};
-
-const collaboratorsRequestedByQuery = (query) => {
-    return {
-        type: FETCH_COLLABORATORS_REQUEST_BY_QUERY,
-        payload: query,
     };
 };
 

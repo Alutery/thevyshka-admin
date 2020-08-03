@@ -10,8 +10,9 @@ import PaginationAuthorsContainer from './pagination-authors-container';
 
 import {withDataService} from '../../hoc';
 import {fetchCollaborators} from '../../../actions';
+import {hideModal, showModal} from '../../../actions/modal-actions';
 
-const Authors = ({fetchCollaborators, collaborators, loading, error}) => {
+const Authors = ({fetchCollaborators, collaborators, loading, error, modalIsOpen,  hideModal, showModal}) => {
     useEffect(() => {
         fetchCollaborators();
     }, [fetchCollaborators]);
@@ -25,10 +26,15 @@ const Authors = ({fetchCollaborators, collaborators, loading, error}) => {
         // searchTags(query);
     };
 
+    const handleClick = () => {
+        console.log('modalIsOpen:', modalIsOpen)
+        modalIsOpen ? hideModal() : showModal();
+    };
+
     return (
         <>
             <ContentHeader title="Редакция">
-                <ContentButton text="Добавить нового"/>
+                <ContentButton text="Добавить нового" onClick={handleClick}/>
             </ContentHeader>
             <FilterBar placeholder="Поиск по имени" onSearch={handleSubmitSearch}>
                 <PaginationAuthorsContainer/>
@@ -42,14 +48,19 @@ const Authors = ({fetchCollaborators, collaborators, loading, error}) => {
     );
 };
 
-const mapStateToProps = ({collaboratorsList: {collaborators, loading, error}}) => {
-    return {collaborators, loading, error};
+const mapStateToProps = ({
+        collaboratorsList: {collaborators, loading, error},
+        modal: {open}
+    }) => {
+    return {collaborators, loading, error, modalIsOpen: open};
 };
 
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
-        fetchCollaborators: fetchCollaborators(dataService, dispatch)
-    }
+        fetchCollaborators: fetchCollaborators(dataService, dispatch),
+        hideModal: () => hideModal(dispatch),
+        showModal: () => showModal(dispatch),
+    };
 };
 
 export default compose(
