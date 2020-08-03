@@ -2,7 +2,8 @@ import {
     FETCH_COLLABORATORS_REQUEST,
     FETCH_COLLABORATORS_REQUEST_BY_PAGE,
     FETCH_COLLABORATORS_SUCCESS,
-    FETCH_COLLABORATORS_ERROR
+    FETCH_COLLABORATORS_ERROR,
+    FETCH_COLLABORATORS_REQUEST_BY_QUERY,
 } from '../constants/collaborators-types';
 
 const collaboratorsList = (state, action) => {
@@ -11,9 +12,10 @@ const collaboratorsList = (state, action) => {
             collaborators: [],
             totalCount: 0,
             pageSize: 15,
-            currentPage: 1,
+            currentPage: 0,
             loading: true,
             error: null,
+            query: '',
         };
     }
 
@@ -21,8 +23,10 @@ const collaboratorsList = (state, action) => {
         case FETCH_COLLABORATORS_REQUEST:
             return {
                 ...state.collaboratorsList,
+                currentPage: 0,
                 loading: true,
                 error: null,
+                query: '',
             };
         case FETCH_COLLABORATORS_REQUEST_BY_PAGE:
             return {
@@ -30,6 +34,11 @@ const collaboratorsList = (state, action) => {
                 currentPage: action.payload,
                 loading: true,
                 error: null,
+            };
+        case FETCH_COLLABORATORS_REQUEST_BY_QUERY:
+            return {
+                ...state.collaboratorsList,
+                query: action.payload,
             };
         case FETCH_COLLABORATORS_SUCCESS:
             return {

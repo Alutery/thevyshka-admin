@@ -19,7 +19,7 @@ const mapStateToProps = ({collaboratorsList: {totalCount, pageSize, currentPage}
 
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
-        onCurrentPageChange: (page) => {
+        onCurrentPageChange: ({page}) => {
             fetchCollaboratorsByPage(page, dataService, dispatch);
         },
     };

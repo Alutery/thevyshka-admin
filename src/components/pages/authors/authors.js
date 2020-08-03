@@ -20,12 +20,17 @@ const Authors = ({fetchCollaborators, collaborators, loading, error}) => {
         return <div>Error</div>;
     }
 
+    const handleSubmitSearch = (query) => {
+        console.log(query)
+        // searchTags(query);
+    };
+
     return (
         <>
             <ContentHeader title="Редакция">
                 <ContentButton text="Добавить нового"/>
             </ContentHeader>
-            <FilterBar placeholder="Поиск по имени">
+            <FilterBar placeholder="Поиск по имени" onSearch={handleSubmitSearch}>
                 <PaginationAuthorsContainer/>
             </FilterBar>
             {

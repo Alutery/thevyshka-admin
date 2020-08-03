@@ -57,12 +57,10 @@ const fetchPosts = ({page = 0, query, status} = {}, dataService, dispatch) => {
     dispatch(postsRequestedByPage(page));
 
     if (query) {
-        dispatch(postsRequestedByQuery(query));
         return _fetchPostsByQuery({page, query}, dataService, dispatch);
     }
 
     if (status) {
-        dispatch(postsRequestedByStatus(status));
         return _fetchPostsByStatus({page, status}, dataService, dispatch);
     }
 
@@ -73,14 +71,17 @@ const fetchPosts = ({page = 0, query, status} = {}, dataService, dispatch) => {
 };
 
 const _fetchPostsByQuery = ({query, page = 0}, dataService, dispatch) => {
+    dispatch(postsRequestedByQuery(query));
+
     dataService.gatAllPostsByQuery(query, page * PAGE_SIZE)
         .then(data => dispatch(postsLoaded(data)))
         .catch(error => dispatch(postsError(error)));
 };
 
 const _fetchPostsByStatus = ({status, page = 0}, dataService, dispatch) => {
-    let result;
+    dispatch(postsRequestedByStatus(status));
 
+    let result;
     switch (status) {
         case POST_STATUS_ALL:
             result = dataService.getAllPosts(page * PAGE_SIZE);

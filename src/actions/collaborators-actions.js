@@ -2,7 +2,8 @@ import {
     FETCH_COLLABORATORS_REQUEST,
     FETCH_COLLABORATORS_REQUEST_BY_PAGE,
     FETCH_COLLABORATORS_SUCCESS,
-    FETCH_COLLABORATORS_ERROR
+    FETCH_COLLABORATORS_ERROR,
+    FETCH_COLLABORATORS_REQUEST_BY_QUERY,
 } from '../constants/collaborators-types';
 
 const collaboratorsRequested = () => {
@@ -11,9 +12,17 @@ const collaboratorsRequested = () => {
     };
 };
 
-const collaboratorsRequestedByPage = () => {
+const collaboratorsRequestedByPage = (page) => {
     return {
         type: FETCH_COLLABORATORS_REQUEST_BY_PAGE,
+        payload: page,
+    };
+};
+
+const collaboratorsRequestedByQuery = (query) => {
+    return {
+        type: FETCH_COLLABORATORS_REQUEST_BY_QUERY,
+        payload: query,
     };
 };
 
@@ -39,8 +48,8 @@ const fetchCollaborators = (dataService, dispatch) => () => {
         .catch(error => dispatch(collaboratorsError(error)));
 };
 
-const fetchCollaboratorsByPage = (page, dataService, dispatch) => {
-    dispatch(collaboratorsRequestedByPage());
+const fetchCollaboratorsByPage = (page = 0, dataService, dispatch) => {
+    dispatch(collaboratorsRequestedByPage(page));
 
     dataService.getCollaborators(page * 15)
         .then(data => dispatch(collaboratorsLoaded(data)))
