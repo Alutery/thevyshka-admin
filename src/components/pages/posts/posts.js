@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 
 import ContentHeader from '../../base/content-header';
 import FilterBar from '../../filter-bar/filter-bar';
 import PostsTable from './posts-table';
-import ContentButton from '../../base/content-button';
 import PaginationPostsContainer from './pagination-posts-container';
 
 import {fetchPosts} from '../../../actions';
@@ -43,10 +43,10 @@ const Posts = ({fetchPosts, posts, loading, error, query, status}) => {
     return (
         <>
             <ContentHeader title="Статьи">
-                <ContentButton text="Добавить новую"/>
+                <Link to="/editor" className="content__btn">Добавить новую</Link>
             </ContentHeader>
             <FilterBar placeholder="Поиск по заголовку" onSearch={handleSearch} ref={searchInputRef}>
-                <ContentSelect options={selectOptions} currentStatus={status} onChangeSelect={handleChangeSelect}/>
+                <ContentSelect options={selectOptions} current={status} onChangeSelect={handleChangeSelect}/>
                 <PaginationPostsContainer/>
             </FilterBar>
             {
