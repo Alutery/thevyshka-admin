@@ -3,7 +3,10 @@ import {
     FETCH_TAGS_SUCCESS,
     FETCH_TAGS_ERROR,
     FETCH_TAGS_REQUEST_BY_PAGE,
+    FETCH_TAGS_REQUEST_BY_QUERY,
 } from '../constants/tags-types';
+
+import {PAGE_SIZE} from '../constants/common';
 
 const tagsRequested = () => {
     return {
@@ -16,6 +19,13 @@ const tagsRequestedByPage = (page) => {
         type: FETCH_TAGS_REQUEST_BY_PAGE,
         payload: page,
     };
+};
+
+const postsRequestedByQuery = (query) => {
+    return {
+        type: FETCH_TAGS_REQUEST_BY_QUERY,
+        payload: query,
+    }
 };
 
 const tagsLoaded = (posts) => {
@@ -32,9 +42,21 @@ const tagsError = (error) => {
     };
 };
 
-const fetchTags = (dataService, dispatch) => () => {
+const fetchTags = ({page = 0, query} = {}, dataService, dispatch) => {
+    if(query) {
+        return _fetchTagsByQuery({page, query}, dataService, dispatch);
+    }
+
     dispatch(tagsRequested());
-    dataService.getTags()
+    return dataService.getTags(page * PAGE_SIZE)
+        .then(data => dispatch(tagsLoaded(data)))
+        .catch(error => dispatch(tagsError(error)));
+};
+
+const _fetchTagsByQuery = ({page = 0, query}, dataService, dispatch) => {
+    dispatch(postsRequestedByQuery(query));
+
+    return dataService.getAllTagsByQuery(query, page * PAGE_SIZE)
         .then(data => dispatch(tagsLoaded(data)))
         .catch(error => dispatch(tagsError(error)));
 };

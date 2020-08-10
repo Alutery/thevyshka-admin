@@ -9,9 +9,9 @@ import TagsTable from './tags-table';
 import PaginationTagsContainer from './pagination-tags-container';
 
 import {withDataService} from '../../hoc';
-import {fetchTags, searchTags} from '../../../actions';
+import {fetchTags} from '../../../actions';
 
-const Tags = ({fetchTags, searchTags, tags, loading, error}) => {
+const Tags = ({fetchTags, tags, loading, error, query}) => {
     useEffect(() => {
         fetchTags();
     }, [fetchTags]);
@@ -20,9 +20,10 @@ const Tags = ({fetchTags, searchTags, tags, loading, error}) => {
         return <div>Error</div>;
     }
 
-    const handleSubmitSearch = (query) => {
-        console.log(query)
-        // searchTags(query);
+    const handleSubmitSearch = (newQuery) => {
+        if(query !== newQuery) {
+            newQuery ? fetchTags({'query': newQuery}) : fetchTags();
+        }
     };
 
     return (
@@ -45,14 +46,13 @@ const Tags = ({fetchTags, searchTags, tags, loading, error}) => {
     );
 };
 
-const mapStateToProps = ({tagsList: {tags, loading, error}}) => {
-    return {tags, loading, error};
+const mapStateToProps = ({tagsList: {tags, query, loading, error}}) => {
+    return {tags, query, loading, error};
 };
 
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
-        fetchTags: fetchTags(dataService, dispatch),
-        searchTags: (query) => searchTags(dataService, dispatch),
+        fetchTags: (filter) => fetchTags(filter, dataService, dispatch),
     };
 };
 

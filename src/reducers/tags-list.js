@@ -2,7 +2,7 @@ import {
     FETCH_TAGS_REQUEST,
     FETCH_TAGS_SUCCESS,
     FETCH_TAGS_ERROR,
-    FETCH_TAGS_REQUEST_BY_PAGE
+    FETCH_TAGS_REQUEST_BY_PAGE, FETCH_TAGS_REQUEST_BY_QUERY
 } from '../constants/tags-types';
 
 const tagsList = (state, action) => {
@@ -30,6 +30,11 @@ const tagsList = (state, action) => {
                 currentPage: action.payload,
                 loading: true,
                 error: null,
+            };
+        case FETCH_TAGS_REQUEST_BY_QUERY:
+            return {
+                ...state.tagsList,
+                query: action.payload,
             };
         case FETCH_TAGS_SUCCESS:
             return {

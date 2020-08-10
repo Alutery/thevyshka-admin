@@ -28,7 +28,14 @@ export default class DataService {
 
     _gatPostsByQuery(query, start = 1, number = 15) {
         return fetch(`${process.env.REACT_APP_API_URL}/post/search/${encodeURIComponent(query)}/${start}-${start + number}`)
-            .then(response => response.json());
+            .then(response => response.json())
+            .then(result => {
+                result.posts = result.posts.map(post => {
+                    post.modifiedDate = this._formatDate(post.modifiedDate);
+                    return post;
+                });
+                return result;
+            });
     }
 
     getAllPosts(start = 1, number = 15) {
@@ -52,8 +59,25 @@ export default class DataService {
             .then(response => response.json());
     }
 
+    getAllTagsByQuery(query, start = 1, number = 15) {
+        return fetch(`${process.env.REACT_APP_API_URL}/tag/search/${encodeURIComponent(query)}/${start}-${start + number}`)
+            .then(response => response.json());
+    }
+
     getCollaborators(start = 1, number = 15) {
         return fetch(`${process.env.REACT_APP_API_URL}/collab/${start}-${start + number}`)
+            .then(response => response.json())
+            .then(result => {
+                result.collaborators = result.collaborators.map(collaborator => {
+                    collaborator.date = this._formatDate(collaborator.date);
+                    return collaborator;
+                });
+                return result;
+            });
+    }
+
+    getCollaboratorsByQuery(query, start = 1, number = 15) {
+        return fetch(`${process.env.REACT_APP_API_URL}/collab/search/${encodeURIComponent(query)}/${start}-${start + number}`)
             .then(response => response.json())
             .then(result => {
                 result.collaborators = result.collaborators.map(collaborator => {

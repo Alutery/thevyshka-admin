@@ -12,7 +12,7 @@ import {withDataService} from '../../hoc';
 import {fetchCollaborators} from '../../../actions';
 import {hideModal, showModal} from '../../../actions/modal-actions';
 
-const Authors = ({fetchCollaborators, collaborators, loading, error, modalIsOpen,  hideModal, showModal}) => {
+const Authors = ({fetchCollaborators, collaborators, query, loading, error, modalIsOpen,  hideModal, showModal}) => {
     useEffect(() => {
         fetchCollaborators();
     }, [fetchCollaborators]);
@@ -21,9 +21,10 @@ const Authors = ({fetchCollaborators, collaborators, loading, error, modalIsOpen
         return <div>Error</div>;
     }
 
-    const handleSubmitSearch = (query) => {
-        console.log(query)
-        // searchTags(query);
+    const handleSubmitSearch = (newQuery) => {
+        if(query !== newQuery) {
+            newQuery ? fetchCollaborators({'query': newQuery}) : fetchCollaborators();
+        }
     };
 
     const handleClick = () => {
@@ -49,15 +50,15 @@ const Authors = ({fetchCollaborators, collaborators, loading, error, modalIsOpen
 };
 
 const mapStateToProps = ({
-        collaboratorsList: {collaborators, loading, error},
+        collaboratorsList: {collaborators, query, loading, error},
         modal: {open}
     }) => {
-    return {collaborators, loading, error, modalIsOpen: open};
+    return {collaborators, query, loading, error, modalIsOpen: open};
 };
 
 const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
-        fetchCollaborators: fetchCollaborators(dataService, dispatch),
+        fetchCollaborators: (filter ={}) => fetchCollaborators(filter, dataService, dispatch),
         hideModal: () => hideModal(dispatch),
         showModal: () => showModal(dispatch),
     };

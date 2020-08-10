@@ -3,7 +3,10 @@ import {
     FETCH_COLLABORATORS_REQUEST_BY_PAGE,
     FETCH_COLLABORATORS_SUCCESS,
     FETCH_COLLABORATORS_ERROR,
+    FETCH_COLLABORATORS_REQUEST_BY_QUERY,
 } from '../constants/collaborators-types';
+
+import {PAGE_SIZE} from '../constants/common';
 
 const collaboratorsRequested = () => {
     return {
@@ -15,6 +18,13 @@ const collaboratorsRequestedByPage = (page) => {
     return {
         type: FETCH_COLLABORATORS_REQUEST_BY_PAGE,
         payload: page,
+    };
+};
+
+const collaboratorsRequestedByQuery = (query) => {
+    return {
+        type: FETCH_COLLABORATORS_REQUEST_BY_QUERY,
+        payload: query,
     };
 };
 
@@ -32,10 +42,21 @@ const collaboratorsError = (error) => {
     };
 };
 
-const fetchCollaborators = (dataService, dispatch) => () => {
-    dispatch(collaboratorsRequested());
+const fetchCollaborators = ({page = 0, query} = {}, dataService, dispatch) => {
+    if (query) {
+        return _fetchCollaboratorsByQuery({page, query}, dataService, dispatch);
+    }
 
-    dataService.getCollaborators()
+    dispatch(collaboratorsRequested());
+    dataService.getCollaborators(page * PAGE_SIZE)
+        .then(data => dispatch(collaboratorsLoaded(data)))
+        .catch(error => dispatch(collaboratorsError(error)));
+};
+
+const _fetchCollaboratorsByQuery = ({query, page = 0}, dataService, dispatch) => {
+    dispatch(collaboratorsRequestedByQuery(query));
+
+    dataService.getCollaboratorsByQuery(query, page * PAGE_SIZE)
         .then(data => dispatch(collaboratorsLoaded(data)))
         .catch(error => dispatch(collaboratorsError(error)));
 };
