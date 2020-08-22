@@ -5,16 +5,17 @@ import Posts from '../pages/posts/posts';
 import Tags from '../pages/tags/tags';
 import Authors from '../pages/authors/authors';
 import PostEditor from '../pages/post-editor/post-editor';
+import ProtectedRoute from '../protected-route/protected-route';
 
 const Main = () => {
     return (
         <main className="content">
             <Switch>
-                <Route exact path="/"> <Redirect to="/posts" /></Route>
-                <Route exact path='/posts' component={Posts} />
-                <Route exact path='/tags' component={Tags} />
-                <Route exact path='/authors' component={Authors} />
-                <Route exact path='/editor' component={PostEditor} />
+                <ProtectedRoute exact path='/posts' component={Posts}/>
+                <ProtectedRoute exact path='/tags' component={Tags}/>
+                <ProtectedRoute exact path='/authors' component={Authors}/>
+                <ProtectedRoute exact path='/editor' component={PostEditor}/>
+                <Route path="/"> <Redirect to="/posts"/></Route>
             </Switch>
         </main>
     );
