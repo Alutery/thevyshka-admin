@@ -49,7 +49,7 @@ const userLoginFetch = (user, onError) => {
                     localStorage.removeItem('token')
                 });
         }).catch(error => {
-            alert('Ошибка авторизации' + error);
+            alert('Пользователь не найден');
             onError();
         });
     };
