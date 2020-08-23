@@ -1,0 +1,71 @@
+.category-select-wrapper {
+  position: relative;
+  user-select: none;
+}
+
+.category-select {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: 180px;
+  background: #FFFFFF;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+
+  &__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    font-weight: 300;
+    padding: 7px;
+    cursor: pointer;
+  }
+}
+
+.category-options {
+  margin-top: 7px;
+  width: 100%;
+  position: absolute;
+  display: block;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border-top: 0;
+  background: #fff;
+  transition: all 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  padding: 6px;
+  overflow: hidden;
+  font-size: 1.4rem;
+}
+
+.category-select.open .category-options {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.category-option {
+  position: relative;
+  display: block;
+  padding: 0 5px 0 5px;
+  font-weight: 300;
+  color: #3b3b3b;
+  line-height: 2.4rem;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.category-option:hover {
+  cursor: pointer;
+  background-color: #ECECEC;
+}
+
+.category-option.selected {
+  background-color: #ECECEC;
+}
