@@ -13,14 +13,12 @@ import './stylesheets/style.scss';
 const dataService = new DataService();
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <DataServiceProvider value={dataService}>
-                <Router>
-                    <App/>
-                </Router>
-            </DataServiceProvider>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <DataServiceProvider value={dataService}>
+            <Router>
+                <App/>
+            </Router>
+        </DataServiceProvider>
+    </Provider>,
     document.getElementById('root')
 );
