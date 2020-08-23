@@ -60,6 +60,10 @@ export default class DataService {
     }
 
     getAllTagsByQuery(query, start = 1, number = 15) {
+        if(!query) {
+            return this.getTags(start, number);
+        }
+
         return fetch(`${process.env.REACT_APP_API_URL}/tag/search/${encodeURIComponent(query)}/${start}-${start + number}`)
             .then(response => response.json());
     }
@@ -77,6 +81,10 @@ export default class DataService {
     }
 
     getCollaboratorsByQuery(query, start = 1, number = 15) {
+        if(!query) {
+            return this.getCollaborators(start, number);
+        }
+
         return fetch(`${process.env.REACT_APP_API_URL}/collab/search/${encodeURIComponent(query)}/${start}-${start + number}`)
             .then(response => response.json())
             .then(result => {
@@ -86,5 +94,10 @@ export default class DataService {
                 });
                 return result;
             });
+    }
+
+    getCategories() {
+        return fetch(`${process.env.REACT_APP_API_URL}/category`)
+            .then(response => response.json())
     }
 }
