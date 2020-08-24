@@ -56,6 +56,17 @@
     }
   }
 
+  &__buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    margin-top: 15px;
+
+    &>button:not(:first-child) {
+      margin-right: 15px;
+    }
+  }
+
   &__sidebar {
     flex: 0 0 25%;
     max-width: 250px;
@@ -169,7 +180,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 150px;
+      max-width: 130px;
     }
 
     &__role {
@@ -179,7 +190,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 150px;
+      max-width: 130px;
     }
   }
 
@@ -208,6 +219,7 @@
   .ck-editor, .ck-editor__main, .ck-content {
     min-height: 50rem;
   }
+
   //
   //font-size: 1.3rem;
   //

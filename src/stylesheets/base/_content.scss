@@ -1,13 +1,13 @@
 .content {
   box-sizing: border-box;
-  width: auto;
+  width: 100vw;
   min-height: 100%;
   margin-left: 20rem;
-  //padding: 5rem 0 0;
   padding: 5rem 2rem 0;
   background-color: $color-background;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 
   &__header {
     padding: 1.7rem 0;
