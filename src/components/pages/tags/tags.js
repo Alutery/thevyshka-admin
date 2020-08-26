@@ -11,7 +11,7 @@ import PaginationTagsContainer from './pagination-tags-container';
 import {withDataService} from '../../hoc';
 import {fetchTags} from '../../../actions';
 
-const Tags = ({fetchTags, tags, loading, error, query}) => {
+const Tags = ({fetchTags, tags, loading, error, query, dataService}) => {
     useEffect(() => {
         fetchTags();
     }, [fetchTags]);
@@ -21,9 +21,15 @@ const Tags = ({fetchTags, tags, loading, error, query}) => {
     }
 
     const handleSubmitSearch = (newQuery) => {
-        if(query !== newQuery) {
+        if (query !== newQuery) {
             newQuery ? fetchTags({'query': newQuery}) : fetchTags();
         }
+    };
+
+    const handleSubmitForm = (name) => {
+        dataService
+            .createTag(name)
+            .then(fetchTags);
     };
 
     return (
@@ -32,14 +38,14 @@ const Tags = ({fetchTags, tags, loading, error, query}) => {
             <div className="tags__columns">
                 <div className="tags__left-column">
                     <FilterBar placeholder="Поиск по тегу" onSearch={handleSubmitSearch}>
-                        <PaginationTagsContainer />
+                        <PaginationTagsContainer/>
                     </FilterBar>
                     {
-                        loading ? <TagsTable loading={loading}/> : <TagsTable tags={tags}/>
+                        loading ? <TagsTable loading={loading}/> : <TagsTable tags={tags} fetchTags={fetchTags}/>
                     }
                 </div>
                 <div className="tags__right-column">
-                    <AddForm/>
+                    <AddForm onSubmit={handleSubmitForm}/>
                 </div>
             </div>
         </>

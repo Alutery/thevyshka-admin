@@ -47,7 +47,7 @@ const fetchTags = ({page = 0, query} = {}, dataService, dispatch) => {
         return _fetchTagsByQuery({page, query}, dataService, dispatch);
     }
 
-    dispatch(tagsRequested());
+    dispatch(tagsRequestedByPage(page));
     return dataService.getTags(page * PAGE_SIZE)
         .then(data => dispatch(tagsLoaded(data)))
         .catch(error => dispatch(tagsError(error)));
