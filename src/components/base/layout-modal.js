@@ -10,7 +10,7 @@ const LayoutModal = ({children, open}) => {
     );
 };
 
-const mapStateToProps = ({modal: {open}}) => {
+const mapStateToProps = ({authorModal: {open}}) => {
     return {open};
 }
 

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 import Header from '../header/header';
 import SideBar from '../sidebar/sidebar';
@@ -13,7 +13,7 @@ import {getProfileFetch} from '../../actions/auth-actions';
 const App = ({getProfileFetch}) => {
     useEffect(() => {
         getProfileFetch();
-    }, []);
+    }, [getProfileFetch]);
 
     return (
         <Switch>

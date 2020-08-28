@@ -6,8 +6,8 @@
   }
 
   &__left-column {
-    max-width: 600px;
-    flex-grow: 1;
+    width: 600px;
+    flex: 0 0 auto;
   }
 
   &__table-row {
