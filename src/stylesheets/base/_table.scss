@@ -46,3 +46,22 @@
     max-height: 48px;
   }
 }
+
+.content-table__actions {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  button {
+    border: none;
+    text-decoration: underline;
+    text-underline: $color-link;
+    background: none;
+    padding: 0;
+    color: $color-link;
+    outline: none;
+    cursor: pointer;
+  }
+}

@@ -100,4 +100,114 @@ export default class DataService {
         return fetch(`${process.env.REACT_APP_API_URL}/category`)
             .then(response => response.json())
     }
+
+    createPost(post) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/post`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(post)
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
+        ).then(resp => {
+            console.log(resp);
+        }).catch(error => {
+            alert(error);
+        });
+    }
+
+    _sendTagRequest(tag, method) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/tag`, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(tag)
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
+        );
+    }
+
+    createTag(tagName) {
+        return this._sendTagRequest({name: tagName}, 'POST');
+    }
+
+    changeTag(tag) {
+        return this._sendTagRequest(tag, 'PUT');
+    }
+
+    deleteTag(tagId) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/tag/${tagId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
+        );
+    }
+
+    _sendCollaboratorRequest(collaborator, method) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/collab`, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(collaborator)
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
+        );
+    }
+
+    createCollaborator(collaborator) {
+        return this._sendCollaboratorRequest(collaborator, 'POST');
+    }
+
+    editCollaborator(collaborator) {
+        return this._sendCollaboratorRequest(collaborator, 'PUT');
+    }
+
+    deleteCollaborator(collaboratorId) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/collab/${collaboratorId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
+        );
+    }
+
+    addPhoto(photo) {
+        const token = localStorage.token;
+        const formData = new FormData();
+        formData.append('uploadedFile', photo);
+
+        return fetch(`${process.env.REACT_APP_API_URL}/photo`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            body: formData
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp.text()
+        );
+    }
 }

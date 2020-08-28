@@ -42,7 +42,6 @@ const userLoginFetch = (user, onError) => {
 
             getProfile(jwt)
                 .then(user => {
-                    console.log(user)
                     dispatch(loginUser(user))
                 })
                 .catch(() => {

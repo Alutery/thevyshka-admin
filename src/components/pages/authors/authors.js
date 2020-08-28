@@ -10,9 +10,9 @@ import PaginationAuthorsContainer from './pagination-authors-container';
 
 import {withDataService} from '../../hoc';
 import {fetchCollaborators} from '../../../actions';
-import {hideModal, showModal} from '../../../actions/modal-actions';
+import {hideModal, createAuthorShowModal} from '../../../actions/authors-modal-actions';
 
-const Authors = ({fetchCollaborators, collaborators, query, loading, error, modalIsOpen,  hideModal, showModal}) => {
+const Authors = ({fetchCollaborators, collaborators, query, loading, error, modalIsOpen,  hideModal, createAuthorShowModal, dataService}) => {
     useEffect(() => {
         fetchCollaborators();
     }, [fetchCollaborators]);
@@ -28,8 +28,7 @@ const Authors = ({fetchCollaborators, collaborators, query, loading, error, moda
     };
 
     const handleClick = () => {
-        console.log('modalIsOpen:', modalIsOpen)
-        modalIsOpen ? hideModal() : showModal();
+        !modalIsOpen && createAuthorShowModal();
     };
 
     return (
@@ -41,9 +40,9 @@ const Authors = ({fetchCollaborators, collaborators, query, loading, error, moda
                 <PaginationAuthorsContainer/>
             </FilterBar>
             {
-                loading ?
-                    <AuthorsTable loading={loading}/>
-                    : <AuthorsTable collaborators={collaborators.collaborators}/>
+                loading
+                    ? <AuthorsTable loading={loading}/>
+                    : <AuthorsTable collaborators={collaborators.collaborators} fetchCollaborators={fetchCollaborators} dataService={dataService}/>
             }
         </>
     );
@@ -51,7 +50,7 @@ const Authors = ({fetchCollaborators, collaborators, query, loading, error, moda
 
 const mapStateToProps = ({
         collaboratorsList: {collaborators, query, loading, error},
-        modal: {open}
+        authorModal: {open}
     }) => {
     return {collaborators, query, loading, error, modalIsOpen: open};
 };
@@ -60,7 +59,7 @@ const mapDispatchToProps = (dispatch, {dataService}) => {
     return {
         fetchCollaborators: (filter ={}) => fetchCollaborators(filter, dataService, dispatch),
         hideModal: () => hideModal(dispatch),
-        showModal: () => showModal(dispatch),
+        createAuthorShowModal: () => createAuthorShowModal(dispatch),
     };
 };
 

@@ -47,7 +47,7 @@ const fetchCollaborators = ({page = 0, query} = {}, dataService, dispatch) => {
         return _fetchCollaboratorsByQuery({page, query}, dataService, dispatch);
     }
 
-    dispatch(collaboratorsRequested());
+    dispatch(collaboratorsRequestedByPage(page));
     dataService.getCollaborators(page * PAGE_SIZE)
         .then(data => dispatch(collaboratorsLoaded(data)))
         .catch(error => dispatch(collaboratorsError(error)));
