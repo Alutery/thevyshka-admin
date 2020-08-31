@@ -1,7 +1,15 @@
 import React from 'react';
 import Spinner from '../../base/spinner';
+import {Link} from 'react-router-dom';
 
-const PostsTable = ({loading, posts}) => {
+const PostsTable = ({loading, posts, onDelete}) => {
+
+    const handleDeleteClick = (postId) => {
+        if (window.confirm('Вы уверены, что хотите удалить?')) {
+            onDelete(postId);
+        }
+    }
+
     return (
         <>
             <table className="content__table posts_table">
@@ -13,6 +21,7 @@ const PostsTable = ({loading, posts}) => {
                     <th>Теги</th>
                     <th>URL-путь</th>
                     <th>Дата</th>
+                    <th>Действия</th>
                 </tr>
                 </thead>
                 <tbody style={{whiteSpace: 'pre-wrap'}}>
@@ -26,6 +35,17 @@ const PostsTable = ({loading, posts}) => {
                                 <td>{post.tags.map(tag => tag.name).join(', ')}</td>
                                 <td>/{post.linkName}/</td>
                                 <td>{post.modifiedDate}</td>
+                                <td>
+                                    <div className="content-table__actions">
+                                        <Link to={`/post/${post.id}`} className="content__btn">Перейти</Link>
+                                        <Link to={`/editor/${post.id}`} className="content__btn">Изменить</Link>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDeleteClick(post.id)}>
+                                            Удалить
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                         );
                     })

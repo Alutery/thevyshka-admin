@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom'
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 
@@ -12,7 +12,7 @@ import {fetchPosts} from '../../../actions';
 import {withDataService} from '../../hoc';
 import ContentSelect from '../../base/content-select';
 
-const Posts = ({fetchPosts, posts, loading, error, query, status}) => {
+const Posts = ({fetchPosts, posts, loading, error, query, status, dataService}) => {
     const selectOptions = [
         {key: 1, value: 'all', name: 'Все', default: true},
         {key: 2, value: 'draft', name: 'Черновик'},
@@ -31,9 +31,15 @@ const Posts = ({fetchPosts, posts, loading, error, query, status}) => {
     };
 
     const handleSearch = (newQuery) => {
-        if(query !== newQuery) {
+        if (query !== newQuery) {
             newQuery ? fetchPosts({'query': newQuery}) : fetchPosts();
         }
+    };
+
+    const handleDelete = (postId) => {
+        dataService
+            .deletePost(postId)
+            .then(() => fetchPosts());
     };
 
     if (error) {
@@ -46,11 +52,11 @@ const Posts = ({fetchPosts, posts, loading, error, query, status}) => {
                 <Link to="/editor" className="content__btn">Добавить новую</Link>
             </ContentHeader>
             <FilterBar placeholder="Поиск по заголовку" onSearch={handleSearch} ref={searchInputRef}>
-                <ContentSelect options={selectOptions} current={status} onChangeSelect={handleChangeSelect}/>
+                <ContentSelect options={selectOptions} current={status} onChangeSelect={handleChangeSelect} initialMessage={"Статус"}/>
                 <PaginationPostsContainer/>
             </FilterBar>
             {
-                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts}/>
+                loading ? <PostsTable loading={loading}/> : <PostsTable posts={posts} onDelete={handleDelete}/>
             }
         </>
     );
