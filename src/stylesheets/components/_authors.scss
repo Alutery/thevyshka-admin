@@ -25,7 +25,8 @@
       left: 17px;
       z-index: 1;
       background-size: contain;
-      vertical-align: middle
+      vertical-align: middle;
+      object-fit: cover;
     }
   }
 }

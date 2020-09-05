@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@ckeditor/ckeditor5-build-classic": "^21.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -12,6 +13,7 @@
     "formik": "^2.1.5",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
+    "react-ckeditor-component": "^1.1.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.2",
     "react-paginating": "^1.4.0",

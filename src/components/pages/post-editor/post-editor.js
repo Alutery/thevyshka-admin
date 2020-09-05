@@ -1,100 +1,203 @@
 import React, {useEffect, useState} from 'react';
-import {object, array} from 'yup';
+import {object, array, string} from 'yup';
 import {compose} from 'redux';
-
 import {Formik} from 'formik';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {useParams, useHistory} from 'react-router-dom';
 
 import Categories from './categories/categories';
 import Collaborators from './collaborators/collaborators';
 import ContentHeader from '../../base/content-header';
 import DragAndDrop from './drag-and-drop';
+import Tags from './tags/tags';
+import FormButton from '../../form-button/form-button';
+import Editor from './ckeditor';
 
 import {withDataService} from '../../hoc';
-import Tags from './tags/tags';
 
-const PostEditor = ({dataService}) => {
+
+const PostEditor = ({dataService, editable = true}) => {
+    const {postId} = useParams();
+
+    const [initialValues, setInitialValues] = useState({
+        title: '',
+        description: '',
+        linkName: '',
+        status: '',
+    });
+
     const [files, setFiles] = useState([]);
+    const [content, setContent] = useState('');
 
     const [tags, setTags] = useState([]);
     const [categories, setCategories] = useState([]);
     const [collaborators, setCollaborators] = useState([]);
 
     useEffect(() => {
+        if (postId) {
+            dataService
+                .getPostById(postId)
+                .then(post => {
+                    console.log(post)
+                    setCollaborators(post.collaborators.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        role: item.role,
+                        photo: item.photo,
+                    })));
+                    setCategories(categories => categories.map(category => (
+                        post.categories.some(item => item.id === category.id)
+                            ? {...category, selected: true}
+                            : {...category, selected: false}
+                    )));
+                    setTags(post.tags);
+                    setContent(post.content);
+                    post.image && setFiles([{name: post.image, preview: post.image}]);
+                    setInitialValues({
+                        title: post.title || '',
+                        description: post.description || '',
+                        linkName: post.linkName || '',
+                        status: post.status || '',
+                    });
+
+                    console.log(files)
+                });
+        }
+    }, [postId, dataService])
+
+
+    useEffect(() => {
         dataService.getCategories()
             .then(data => data.map(category => ({...category, selected: false})))
             .then(data => setCategories(data));
-    }, []);
+    }, [dataService]);
 
     return (
         <>
-            <ContentHeader title="Создание статьи"/>
+            <ContentHeader
+                title={
+                    editable
+                        ? (postId ? "Редактирование статьи" : "Создание статьи")
+                        : "Просмотр статьи"
+                }
+            />
             <div className="editor">
                 <div className="editor__main">
                     <Formik
-                        initialValues={{
-                            files: [],
-                        }}
-                        onSubmit={(values) => {
-                            console.log(values)
-                            console.log(
-                                JSON.stringify(
-                                    {
-                                        files: values.files.map(file => ({
-                                            fileName: file.name,
-                                            type: file.type,
-                                            size: `${file.size} bytes`
-                                        })),
-                                    },
-                                    null,
-                                    2
-                                )
-                            );
+                        enableReinitialize
+                        initialValues={initialValues}
+                        onSubmit={async (values) => {
+
+                            if (files) {
+                                if(files[0] instanceof File) {
+                                    let photo = await dataService.addPhoto(files[0]);
+                                    values.image = process.env.REACT_APP_URL + photo;
+                                } else {
+                                    values.image = files[0].name;
+                                }
+                            }
+
+                            values.tags = [...new Set(tags.map(tag => tag.name))];
+
+                            values.categories = categories
+                                .filter(category => category.selected)
+                                .map(category => category.name);
+
+                            values.collaborators = collaborators.map(collaborator => ({
+                                id: collaborator.id,
+                                role: collaborator.role || '',
+                            }));
+
+                            values.content = content;
+
+                            console.log(values);
+
+                            let result;
+                            if (!postId) {
+                                result = dataService.createPost(values);
+                            } else {
+                                result = dataService.editPost({
+                                    id: +postId,
+                                    ...values,
+                                });
+                            }
+
+                            result.then(() => {
+                                window.location.href = '/posts';
+                            })
                         }}
                         validationSchema={object().shape({
                             recaptcha: array(),
+                            title: string(),
+                            'post-description': string(),
+                            link: string(),
                         })}
                     >
                         {
-                            ({values, handleSubmit, setFieldValue}) => (
-                                <form className="editor__form" onSubmit={handleSubmit}>
-                                    <DragAndDrop onChange={setFiles}/>
+                            ({
+                                 values,
+                                 handleSubmit,
+                                 handleChange,
+                                 isSubmitting,
+                                 setFieldValue,
+                             }) => (
+                                <form
+                                    className="editor__form"
+                                    onSubmit={handleSubmit}
+                                    autoComplete="off"
+                                >
+                                    <DragAndDrop onChange={setFiles} disabled={!editable} files={files}/>
                                     <div className="editor__text">
                                         <label htmlFor="title">заголовок</label>
-                                        <input type="text" id="title" name="title"/>
+                                        <input
+                                            type="text"
+                                            name="title"
+                                            value={values.title}
+                                            onChange={handleChange}
+                                            required
+                                            disabled={!editable}
+                                        />
 
-                                        <label htmlFor="post-description">описание</label>
-                                        <textarea name="description" id="post-description"/>
+                                        <label htmlFor="description">описание</label>
+                                        <textarea
+                                            name="description"
+                                            value={values.description}
+                                            onChange={handleChange}
+                                            disabled={!editable}
+                                        />
 
                                         <label htmlFor="link">link name</label>
-                                        <input className="editor-form__link" type="text" id="link" name="link"/>
-
-
-                                        <CKEditor
-                                            editor={ClassicEditor}
-                                            data="<p>Hello from CKEditor 5!</p>"
-                                            onInit={editor => {
-                                                // You can store the "editor" and use when it is needed.
-                                                // console.log('Editor is ready to use!', editor);
-                                            }}
-                                            onChange={(event, editor) => {
-                                                const data = editor.getData();
-                                                console.log({event, editor, data});
-                                            }}
-                                            onBlur={(event, editor) => {
-                                                console.log('Blur.', editor);
-                                            }}
-                                            onFocus={(event, editor) => {
-                                                console.log('Focus.', editor);
-                                            }}
-
+                                        <input
+                                            className="editor-form__link"
+                                            type="text"
+                                            name="linkName"
+                                            value={values.linkName}
+                                            onChange={handleChange}
+                                            required
+                                            disabled={!editable}
                                         />
-                                        <button type="submit" className="content__btn" style={{
-                                            alignSelf: 'flex-end',
-                                            marginTop: '15px',
-                                        }}>Сохранить
-                                        </button>
+
+                                        <Editor content={content} onChange={setContent}/>
+
+                                        <div className="editor__buttons" style={{
+                                            display: editable ? 'flex' : 'none'
+                                        }}>
+                                            <FormButton
+                                                disabled={isSubmitting}
+                                                text={'Опубликовать'}
+                                                className="light"
+                                                onClick={(event) => {
+                                                    setFieldValue('status', 'published')
+                                                }}
+                                            />
+                                            <FormButton
+                                                disabled={isSubmitting}
+                                                text={'Сохранить как черновик'}
+                                                className="dark"
+                                                onClick={(event) => {
+                                                    setFieldValue('status', 'draft')
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </form>
                             )
@@ -102,9 +205,10 @@ const PostEditor = ({dataService}) => {
                     </Formik>
                 </div>
                 <div className="editor__sidebar">
-                    <Tags tags={tags} setTags={setTags}/>
-                    <Categories categories={categories} setCategories={setCategories}/>
-                    <Collaborators collaborators={collaborators} setCollaborators={setCollaborators}/>
+                    <Tags tags={tags} setTags={setTags} disabled={!editable}/>
+                    <Categories categories={categories} setCategories={setCategories} disabled={!editable}/>
+                    <Collaborators collaborators={collaborators} setCollaborators={setCollaborators}
+                                   disabled={!editable}/>
                 </div>
             </div>
         </>

@@ -101,10 +101,33 @@ export default class DataService {
             .then(response => response.json())
     }
 
-    createPost(post) {
+    _sendPostRequest(post, method) {
         const token = localStorage.token;
         return fetch(`${process.env.REACT_APP_API_URL}/post`, {
-            method: 'POST',
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(post)
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
+        ).then(resp => {
+            console.log(resp);
+        }).catch(error => {
+            alert(error);
+        });
+    }
+
+    createPost(post) {
+        return this._sendPostRequest(post, 'POST');
+    }
+
+    editPost(post) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/post/${post.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -208,6 +231,28 @@ export default class DataService {
         }).then(resp => (!resp.ok)
             ? Promise.reject('Error: ' + resp.status)
             : resp.text()
+        );
+    }
+
+    getPostById(id) {
+        return fetch(`${process.env.REACT_APP_API_URL}/post/id/${id}`)
+            .then(resp => (!resp.ok)
+                ? Promise.reject('Error: ' + resp.status)
+                : resp.json()
+            );
+    }
+
+    deletePost(postId) {
+        const token = localStorage.token;
+        return fetch(`${process.env.REACT_APP_API_URL}/post/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        }).then(resp => (!resp.ok)
+            ? Promise.reject('Error: ' + resp.status)
+            : resp
         );
     }
 }

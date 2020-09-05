@@ -1,9 +1,9 @@
 import React from 'react';
-import image from '../../../../images/default-avatar.png';
+
 import CollaboratorsSelect from './collaborators-select';
 import CollaboratorItem from './collaborator-item';
 
-const Collaborators = ({collaborators, setCollaborators}) => {
+const Collaborators = ({collaborators, setCollaborators, disabled}) => {
     return (
         <div className="sidebar__section">
             <h3 className="sidebar__title">Авторы</h3>
@@ -15,13 +15,19 @@ const Collaborators = ({collaborators, setCollaborators}) => {
                                 key={collaborator.id}
                                 collaborator={collaborator}
                                 onClick={() => {
-                                    setCollaborators(collaborators => collaborators.filter(item => item.id !== +collaborator.id));
+                                    !disabled && setCollaborators(collaborators => collaborators.filter(item => item.id !== +collaborator.id));
                                 }}
+                                onInputChange={(event) => {
+                                    setCollaborators(collaborators => collaborators.map(item => item.id === +collaborator.id
+                                    ? {...item, role: event.target.value}
+                                    : item))
+                                }}
+                                disabled={disabled}
                             />
                         ))
                 }
             </div>
-            <CollaboratorsSelect collaborators={collaborators} setCollaborators={setCollaborators}/>
+            {!disabled && <CollaboratorsSelect collaborators={collaborators} setCollaborators={setCollaborators}/>}
         </div>
     );
 };

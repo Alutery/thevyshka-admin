@@ -1,7 +1,7 @@
 import React from 'react';
 import CategorySelect from './category-select';
 
-const Categories = ({categories, setCategories}) => {
+const Categories = ({categories, setCategories, disabled}) => {
     return (
         <div className="sidebar__section">
             <h3 className="sidebar__title">Рубрики</h3>
@@ -13,7 +13,7 @@ const Categories = ({categories, setCategories}) => {
                             <div className={`sidebar__bubble bubble_square bubble-${index % 4 + 1}`}
                                  key={category.id}
                                  onClick={() => {
-                                     setCategories(categories => categories.map(item => item.id === +category.id ? {
+                                     !disabled && setCategories(categories => categories.map(item => item.id === +category.id ? {
                                          ...item,
                                          selected: false
                                      } : item))
@@ -25,7 +25,8 @@ const Categories = ({categories, setCategories}) => {
                         ))
                 }
             </div>
-            <CategorySelect
+            {
+                !disabled && <CategorySelect
                 options={categories.filter(category => !category.selected)}
                 onSelect={(id) => {
                     setCategories(categories => categories.map(category => category.id === +id ? {
@@ -33,6 +34,7 @@ const Categories = ({categories, setCategories}) => {
                         selected: true
                     } : category))
                 }}/>
+            }
         </div>
     );
 };

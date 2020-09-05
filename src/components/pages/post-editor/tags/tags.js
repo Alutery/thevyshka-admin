@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TagsSelect from './tags-select';
 
-const Tags = ({tags, setTags}) => {
+const Tags = ({tags, setTags, disabled}) => {
     return (
         <div className="sidebar__section">
             <h3 className="sidebar__title">Теги</h3>
@@ -11,7 +11,7 @@ const Tags = ({tags, setTags}) => {
                         .map((tag, index) => (
                             <div
                                 onClick={() => {
-                                    setTags(tags => tags.filter(item => item.id
+                                    !disabled && setTags(tags => tags.filter(item => item.id
                                         ? item.id !== +tag.id
                                         : item.name !== tag.name));
                                 }}
@@ -24,7 +24,7 @@ const Tags = ({tags, setTags}) => {
                         ))
                 }
             </div>
-            <TagsSelect tags={tags} setTags={setTags}/>
+            {!disabled && <TagsSelect tags={tags} setTags={setTags} disabled={disabled}/>}
         </div>
     );
 };

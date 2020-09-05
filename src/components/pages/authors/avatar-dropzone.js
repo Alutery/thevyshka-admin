@@ -1,4 +1,4 @@
-import React, {useMemo, useEffect, useState} from 'react';
+import React, {useMemo, useEffect} from 'react';
 import {useDropzone} from 'react-dropzone';
 
 const activeStyle = {
@@ -30,11 +30,12 @@ const thumbInner = {
 
 const img = {
     display: 'block',
-    'width': '90px',
-    'height': '90px',
+    width: '90px',
+    height: '90px',
     cursor: 'pointer',
-    'verticalAlign': 'middle',
-    'borderRadius': '50%',
+    verticalAlign: 'middle',
+    borderRadius: '50%',
+    objectFit: 'cover',
 };
 
 const AvatarDropzone = ({onChange, files, disabled}) => {

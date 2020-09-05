@@ -65,9 +65,7 @@ const img = {
     cursor: 'pointer',
 };
 
-const DragAndDrop = ({onChange}) => {
-    const [files, setFiles] = useState([]);
-
+const DragAndDrop = ({onChange, files, disabled}) => {
     const {
         getRootProps,
         getInputProps,
@@ -80,10 +78,9 @@ const DragAndDrop = ({onChange}) => {
         noClick: true,
         noKeyboard: true,
         onDrop: acceptedFiles => {
-            setFiles(acceptedFiles.map(file => Object.assign(file, {
+            onChange(acceptedFiles.map(file => Object.assign(file, {
                 preview: URL.createObjectURL(file)
             })));
-            onChange(acceptedFiles);
         },
     });
 
@@ -118,11 +115,11 @@ const DragAndDrop = ({onChange}) => {
     return (
         <div className="container">
             <div {...getRootProps({style})}>
-                <input {...getInputProps()} />
+                <input {...getInputProps()} disabled={disabled}/>
                 {
                     files.length ?
                         thumbs
-                        : <button type="button" style={buttonStyle} onClick={open}>Загрузить фото</button>
+                        : <button type="button" style={{...buttonStyle, display: disabled ? 'none' : 'block'}} onClick={open}>Загрузить фото</button>
                 }
             </div>
         </div>

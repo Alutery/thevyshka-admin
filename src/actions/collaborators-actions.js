@@ -1,5 +1,4 @@
 import {
-    FETCH_COLLABORATORS_REQUEST,
     FETCH_COLLABORATORS_REQUEST_BY_PAGE,
     FETCH_COLLABORATORS_SUCCESS,
     FETCH_COLLABORATORS_ERROR,
@@ -7,12 +6,6 @@ import {
 } from '../constants/collaborators-types';
 
 import {PAGE_SIZE} from '../constants/common';
-
-const collaboratorsRequested = () => {
-    return {
-        type: FETCH_COLLABORATORS_REQUEST,
-    };
-};
 
 const collaboratorsRequestedByPage = (page) => {
     return {

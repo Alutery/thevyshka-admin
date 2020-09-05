@@ -22,7 +22,7 @@ const AuthorsModal = ({isOpen, hideModal, fetchCollaborators, dataService, isNew
                 ? [{name: collaborator.photo, preview: process.env.REACT_APP_URL + collaborator.photo}]
                 : []
         );
-    }, [isOpen]);
+    }, [isOpen, collaborator]);
 
     const onCancel = useCallback((event) => {
         const authorModal = document.querySelector('.author-modal');

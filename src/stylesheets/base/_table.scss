@@ -54,7 +54,7 @@
   align-items: flex-start;
   justify-content: space-between;
 
-  button {
+  button, a {
     border: none;
     text-decoration: underline;
     text-underline: $color-link;
@@ -63,5 +63,8 @@
     color: $color-link;
     outline: none;
     cursor: pointer;
+    font-weight: normal;
+    font-size: 1.3rem;
+    line-height: normal;
   }
 }

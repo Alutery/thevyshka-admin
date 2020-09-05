@@ -1,9 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
-const ContentSelect = ({options, onChangeSelect, current}) => {
+const ContentSelect = ({options, onChangeSelect, current, initialMessage}) => {
+    const [isToggled, setIsToggled] = useState(false);
+
     const handleSelectClick = function (event) {
         const self = event.target;
 
+        setIsToggled(true);
         if (!self.classList.contains('selected')) {
             onChangeSelect(self.dataset.value);
         }
@@ -25,7 +28,8 @@ const ContentSelect = ({options, onChangeSelect, current}) => {
         <div className="custom-select-wrapper"
              onClick={() => document.querySelector('.custom-select').classList.toggle('open')}>
             <div className="custom-select">
-                <div className="custom-select__trigger"><span>{options.find(option => option.value === current).name}</span>
+                <div className="custom-select__trigger">
+                    <span>{isToggled ? options.find(option => option.value === current).name : initialMessage}</span>
                     <div className="arrow"/>
                 </div>
                 <div className="custom-options" onClick={handleSelectClick}>

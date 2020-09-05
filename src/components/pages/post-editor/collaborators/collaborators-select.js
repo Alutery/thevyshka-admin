@@ -10,7 +10,6 @@ const CollaboratorsSelect = ({dataService, collaborators, setCollaborators}) => 
 
     const filterCollaborators = useCallback((options) => {
         return options.map(collaborator => {
-            console.log(collaborators.some(item => item.id === collaborator.id))
             return collaborators.some(item => item.id === collaborator.id)
             ? {...collaborator, isDisabled: true}
             : {...collaborator, isDisabled: false}
@@ -51,7 +50,7 @@ const CollaboratorsSelect = ({dataService, collaborators, setCollaborators}) => 
             noOptionsMessage={noOptionsMessage}
             getOptionLabel={option => (
                 <div className="react-select__list-item">
-                    <img src={image} alt="avatar" className="react-select__img"/>
+                    <img className="react-select__img" src={option.photo ? process.env.REACT_APP_URL + option.photo : image} alt="avatar"/>
                     <div className="list-item__text">
                         <span className="react-select__name">{`${option.name || ''} ${option.surname || ''}`}</span>
                     </div>

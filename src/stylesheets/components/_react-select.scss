@@ -1,7 +1,8 @@
 .react-select {
   &__control {
+    background-color: black;
     width: 180px;
-    background: #FFFFFF;
+    //background: #FFFFFF;
     box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.25) !important;
     border-radius: 0 !important;
     border: none !important;
@@ -35,11 +36,12 @@
     width: 180px !important;
     border-radius: 0 !important;
     border: none !important;
+    color: black;
   }
 
   &__menu-list {
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    //-ms-overflow-style: none;  /* Internet Explorer 10+ */
+    //scrollbar-width: none;  /* Firefox */
     padding: 0 !important;
   }
 
@@ -56,7 +58,7 @@
     padding: 0 8px;
 
     &:hover {
-      background-color: #ECECEC;
+      //background-color: #ECECEC;
     }
   }
 

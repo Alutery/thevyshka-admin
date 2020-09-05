@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {userLoginFetch} from '../../../actions/auth-actions';
 
 import './login.scss';
+import FormButton from '../../form-button/form-button';
 
 const LoginForm = ({userLoginFetch}) => {
     return (
@@ -22,17 +23,18 @@ const LoginForm = ({userLoginFetch}) => {
                     .min(6, 'Password must be at least 6 characters')
                     .required(),
             })}
-            onSubmit={(fields , {setSubmitting}) => {
+            onSubmit={(fields, {setSubmitting}) => {
                 userLoginFetch(fields, () => setSubmitting(false));
             }}
-            render={({
-                         errors,
-                         isSubmitting,
-                         touched,
-                         values,
-                         handleChange,
-                         handleSubmit,
-                     }) => (
+        >
+            {({
+                  errors,
+                  isSubmitting,
+                  touched,
+                  values,
+                  handleChange,
+                  handleSubmit,
+              }) => (
                 <form id="login" className="login-form" onSubmit={handleSubmit}>
                     <label htmlFor="email">Email</label>
                     <input
@@ -52,10 +54,10 @@ const LoginForm = ({userLoginFetch}) => {
                         onChange={handleChange}
                         className={'login-form__input' + (errors.password && touched.password ? ' is-invalid' : '')}
                     />
-                    <button type="submit" disabled={isSubmitting}>Войти</button>
+                    <FormButton disabled={isSubmitting} text={'Войти'}/>
                 </form>
             )}
-        />
+        </Formik>
     );
 };
 
