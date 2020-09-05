@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+    color: #000;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 52px;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 42px;
+}
+
+h3 {
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+}
+
+h1, h2, h3, p {
+    margin: 15px 0;
+}
+
+p {
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+}
+
+b {
+    font-weight: bold;
+}
+
+i {
+    font-style: italic;
+}
+
+u {
+    text-decoration-line: underline;
+}
+
+/* ckeditor5-block-quote/theme/blockquote.css */
+blockquote {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    line-height: 23px;
+    font-style: normal;
+    position: relative;
+
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 0;
+    border-image: linear-gradient(182.71deg, rgba(127, 39, 149, 0.8) -3.55%, rgba(34, 157, 190, 0.8) 104.61%);
+    border-radius: 15px;
+    border-left: solid 7px transparent;
+    border-image-slice: 1;
+    overflow: visible;
+}
+
+blockquote p {
+    margin: 0;
+}
+
+blockquote::before {
+    overflow: visible;
+    display: block;
+    content: '“';
+    font-family: 'Rammetto One', cursive;
+    position: absolute;
+    background: linear-gradient(182.71deg, #7F2795 -3.55%, #229DBE 104.61%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    top: -20px;
+    left: -44px;
+    width: 35px;
+    height: 38px;
+    font-size: 40px;
+    line-height: 78px;
+}
+
+/* ckeditor5-block-quote/theme/blockquote.css */
+blockquote [dir="rtl"] blockquote {
+    border-left: 0;
+    border-right: solid 5px hsl(0, 0%, 80%);
+}

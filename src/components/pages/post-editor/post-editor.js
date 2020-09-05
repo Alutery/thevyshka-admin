@@ -13,6 +13,7 @@ import FormButton from '../../form-button/form-button';
 import Editor from './ckeditor';
 
 import {withDataService} from '../../hoc';
+import Toast from '../../../utils/toast';
 
 
 const PostEditor = ({dataService, editable = true}) => {
@@ -37,7 +38,6 @@ const PostEditor = ({dataService, editable = true}) => {
             dataService
                 .getPostById(postId)
                 .then(post => {
-                    console.log(post)
                     setCollaborators(post.collaborators.map(item => ({
                         id: item.id,
                         name: item.name,
@@ -58,8 +58,6 @@ const PostEditor = ({dataService, editable = true}) => {
                         linkName: post.linkName || '',
                         status: post.status || '',
                     });
-
-                    console.log(files)
                 });
         }
     }, [postId, dataService])
@@ -88,7 +86,7 @@ const PostEditor = ({dataService, editable = true}) => {
                         onSubmit={async (values) => {
 
                             if (files) {
-                                if(files[0] instanceof File) {
+                                if (files[0] instanceof File) {
                                     let photo = await dataService.addPhoto(files[0]);
                                     values.image = process.env.REACT_APP_URL + photo;
                                 } else {
@@ -109,21 +107,26 @@ const PostEditor = ({dataService, editable = true}) => {
 
                             values.content = content;
 
-                            console.log(values);
-
-                            let result;
                             if (!postId) {
-                                result = dataService.createPost(values);
+                                dataService
+                                    .createPost(values)
+                                    .then(() => Toast.customSuccess('Статья создана'))
+                                    .then(() => {
+                                        window.location.href = '/posts';
+                                    })
+                                    .catch(() => Toast.customLoadFailed('Произошла ошибка при создании статьи'));
                             } else {
-                                result = dataService.editPost({
-                                    id: +postId,
-                                    ...values,
-                                });
+                                dataService
+                                    .editPost({
+                                        id: +postId,
+                                        ...values,
+                                    })
+                                    .then(() => Toast.customSuccess('Статья изменена'))
+                                    .then(() => {
+                                        window.location.href = '/posts';
+                                    })
+                                    .catch(() => Toast.customLoadFailed('Произошла ошибка при редактировании статьи'));
                             }
-
-                            result.then(() => {
-                                window.location.href = '/posts';
-                            })
                         }}
                         validationSchema={object().shape({
                             recaptcha: array(),

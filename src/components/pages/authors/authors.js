@@ -18,7 +18,7 @@ const Authors = ({fetchCollaborators, collaborators, query, loading, error, moda
     }, [fetchCollaborators]);
 
     if (error) {
-        return <div>Error</div>;
+        return null;
     }
 
     const handleSubmitSearch = (newQuery) => {

@@ -11,6 +11,7 @@ import PaginationPostsContainer from './pagination-posts-container';
 import {fetchPosts} from '../../../actions';
 import {withDataService} from '../../hoc';
 import ContentSelect from '../../base/content-select';
+import Toast from '../../../utils/toast';
 
 const Posts = ({fetchPosts, posts, loading, error, query, status, dataService}) => {
     const selectOptions = [
@@ -39,7 +40,9 @@ const Posts = ({fetchPosts, posts, loading, error, query, status, dataService}) 
     const handleDelete = (postId) => {
         dataService
             .deletePost(postId)
-            .then(() => fetchPosts());
+            .then(() => Toast.customSuccess('Статья удалена'))
+            .then(() => fetchPosts())
+            .catch(() => Toast.customLoadFailed('Произошла ошибка при удалении статьи'));
     };
 
     if (error) {

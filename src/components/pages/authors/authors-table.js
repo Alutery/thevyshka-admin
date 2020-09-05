@@ -6,6 +6,7 @@ import {compose} from 'redux';
 import {withDataService} from '../../hoc';
 import {connect} from 'react-redux';
 import avatar from '../../../images/default-avatar.png';
+import Toast from '../../../utils/toast';
 
 const AuthorsTable = ({loading, collaborators, fetchCollaborators, dataService, modalIsOpen, editAuthorShowModal, detailedAuthorShowModal}) => {
     const handleChangeClick = (collaborator) => {
@@ -20,7 +21,9 @@ const AuthorsTable = ({loading, collaborators, fetchCollaborators, dataService, 
         if (window.confirm('Вы уверены, что хотите удалить?')) {
             dataService
                 .deleteCollaborator(collaboratorId)
-                .then(fetchCollaborators);
+                .then(() => Toast.customSuccess('Автор удален'))
+                .then(fetchCollaborators)
+                .catch(() => Toast.customLoadFailed('Произошла ошибка при удалении автора'));
         }
     }
 

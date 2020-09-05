@@ -5,11 +5,11 @@ import {
 } from '../constants/posts-types';
 
 export default class DataService {
-    dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' })
+    dateTimeFormat = new Intl.DateTimeFormat('en', {year: 'numeric', month: '2-digit', day: '2-digit'})
 
     _formatDate(dateString) {
         const date = new Date(dateString);
-        const [{ value: month },,{ value: day },,{ value: year }] = this.dateTimeFormat.formatToParts(date);
+        const [{value: month}, , {value: day}, , {value: year}] = this.dateTimeFormat.formatToParts(date);
 
         return `${day}.${month}.${year}`;
     }
@@ -60,7 +60,7 @@ export default class DataService {
     }
 
     getAllTagsByQuery(query, start = 1, number = 15) {
-        if(!query) {
+        if (!query) {
             return this.getTags(start, number);
         }
 
@@ -81,7 +81,7 @@ export default class DataService {
     }
 
     getCollaboratorsByQuery(query, start = 1, number = 15) {
-        if(!query) {
+        if (!query) {
             return this.getCollaborators(start, number);
         }
 
@@ -99,6 +99,11 @@ export default class DataService {
     getCategories() {
         return fetch(`${process.env.REACT_APP_API_URL}/category`)
             .then(response => response.json())
+            .then((res) => {
+                    if (res.error) throw(res.error);
+                    return res;
+                }
+            )
     }
 
     _sendPostRequest(post, method) {
@@ -110,13 +115,9 @@ export default class DataService {
                 'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(post)
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        ).then(resp => {
-            console.log(resp);
-        }).catch(error => {
-            alert(error);
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
         });
     }
 
@@ -133,13 +134,9 @@ export default class DataService {
                 'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(post)
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        ).then(resp => {
-            console.log(resp);
-        }).catch(error => {
-            alert(error);
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
         });
     }
 
@@ -152,10 +149,10 @@ export default class DataService {
                 'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(tag)
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        );
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
+        });
     }
 
     createTag(tagName) {
@@ -174,10 +171,10 @@ export default class DataService {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        );
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
+        });
     }
 
     _sendCollaboratorRequest(collaborator, method) {
@@ -189,10 +186,10 @@ export default class DataService {
                 'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(collaborator)
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        );
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
+        });
     }
 
     createCollaborator(collaborator) {
@@ -211,10 +208,10 @@ export default class DataService {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        );
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
+        });
     }
 
     addPhoto(photo) {
@@ -236,10 +233,10 @@ export default class DataService {
 
     getPostById(id) {
         return fetch(`${process.env.REACT_APP_API_URL}/post/id/${id}`)
-            .then(resp => (!resp.ok)
-                ? Promise.reject('Error: ' + resp.status)
-                : resp.json()
-            );
+            .then(resp => {
+                if (!resp.ok) throw resp.error;
+                return resp.json();
+            });
     }
 
     deletePost(postId) {
@@ -250,9 +247,9 @@ export default class DataService {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-        }).then(resp => (!resp.ok)
-            ? Promise.reject('Error: ' + resp.status)
-            : resp
-        );
+        }).then(resp => {
+            if (!resp.ok) throw resp.error;
+            return resp;
+        });
     }
 }

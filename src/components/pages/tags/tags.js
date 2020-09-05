@@ -10,6 +10,7 @@ import PaginationTagsContainer from './pagination-tags-container';
 
 import {withDataService} from '../../hoc';
 import {fetchTags} from '../../../actions';
+import Toast from '../../../utils/toast';
 
 const Tags = ({fetchTags, tags, loading, error, query, dataService}) => {
     useEffect(() => {
@@ -17,7 +18,8 @@ const Tags = ({fetchTags, tags, loading, error, query, dataService}) => {
     }, [fetchTags]);
 
     if (error) {
-        return <div>Error</div>;
+        Toast.pageLoadFailed();
+        return null;
     }
 
     const handleSubmitSearch = (newQuery) => {
@@ -29,7 +31,9 @@ const Tags = ({fetchTags, tags, loading, error, query, dataService}) => {
     const handleSubmitForm = (name) => {
         dataService
             .createTag(name)
-            .then(fetchTags);
+            .then(() => Toast.customSuccess('Тег создан'))
+            .then(fetchTags)
+            .catch(() => Toast.customLoadFailed('Произошла ошибка при создании тега'));
     };
 
     return (

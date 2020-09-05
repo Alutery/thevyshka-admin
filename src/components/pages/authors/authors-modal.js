@@ -9,6 +9,7 @@ import {withDataService} from '../../hoc';
 import {compose} from 'redux';
 import {Formik} from 'formik';
 import AvatarDropzone from './avatar-dropzone';
+import Toast from '../../../utils/toast';
 
 const AuthorsModal = ({isOpen, hideModal, fetchCollaborators, dataService, isNew, collaborator, editable}) => {
     const [files, setFiles] = useState(
@@ -59,28 +60,35 @@ const AuthorsModal = ({isOpen, hideModal, fetchCollaborators, dataService, isNew
                         links: Yup.string(),
                     })}
                     onSubmit={async (createdCollaborator) => {
-                        let photo = null;
-                        if (files && files[0] instanceof File) {
-                            photo = await dataService.addPhoto(files[0]);
+                        if (files) {
+                            if(files[0] instanceof File) {
+                                createdCollaborator.photo = await dataService.addPhoto(files[0]);
+                            } else {
+                                createdCollaborator.photo = files[0].name;
+                            }
                         }
                         createdCollaborator.name = createdCollaborator.name.trim();
                         createdCollaborator.description = createdCollaborator.description.trim();
                         createdCollaborator.links = createdCollaborator.links.trim();
-                        photo && (createdCollaborator.photo = photo);
 
-                        let result;
                         if (isNew) {
-                            result = dataService.createCollaborator(createdCollaborator);
+                            dataService
+                                .createCollaborator(createdCollaborator)
+                                .then(() => Toast.customSuccess('Автор создан'))
+                                .then(hideModal)
+                                .then(fetchCollaborators)
+                                .catch(() => Toast.customLoadFailed('Произошла ошибка при создании автора'));
                         } else {
-                            result = dataService.editCollaborator({
-                                id: collaborator.id,
-                                ...createdCollaborator,
-                            });
+                            dataService
+                                .editCollaborator({
+                                    id: collaborator.id,
+                                    ...createdCollaborator,
+                                })
+                                .then(() => Toast.customSuccess('Автор изменен'))
+                                .then(hideModal)
+                                .then(fetchCollaborators)
+                                .catch(() => Toast.customLoadFailed('Произошла ошибка при редактировании автора'));
                         }
-
-                        result
-                            .then(hideModal)
-                            .then(fetchCollaborators);
                     }}
                 >{({
                        isSubmitting,

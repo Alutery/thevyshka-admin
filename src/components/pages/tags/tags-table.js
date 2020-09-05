@@ -2,6 +2,7 @@ import React from 'react';
 import Spinner from '../../base/spinner';
 import {withDataService} from '../../hoc';
 import {compose} from 'redux';
+import Toast from '../../../utils/toast';
 
 const TagsTable = ({loading, tags, dataService, fetchTags}) => {
     if (loading) {
@@ -17,7 +18,9 @@ const TagsTable = ({loading, tags, dataService, fetchTags}) => {
                     id: tag.id,
                     name: tagName,
                 })
+                .then(() => Toast.customSuccess('Тег изменен'))
                 .then(fetchTags)
+                .catch(() => Toast.customLoadFailed('Произошла ошибка при редактировании тега'))
         }
     }
 
@@ -25,7 +28,9 @@ const TagsTable = ({loading, tags, dataService, fetchTags}) => {
         if (window.confirm('Вы уверены, что хотите удалить?')) {
             dataService
                 .deleteTag(tagId)
-                .then(fetchTags);
+                .then(() => Toast.customSuccess('Тег удален'))
+                .then(fetchTags)
+                .catch(() => Toast.customLoadFailed('Произошла ошибка при удалении тега'));
         }
     }
 

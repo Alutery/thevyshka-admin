@@ -16,3 +16,14 @@ body {
 html, body, #root {
   height: 100%;
 }
+
+// for toast message
+.ct-group {
+  margin: 20px;
+}
+
+.ct-toast {
+  min-width: 250px;
+  justify-content: flex-start;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
